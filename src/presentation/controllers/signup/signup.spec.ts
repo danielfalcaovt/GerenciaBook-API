@@ -5,7 +5,7 @@ import {
   IAccountModel,
   IAddAccount
 } from '../../../domain/usecases/add-account'
-import { badRequest, serverError } from '../../helpers/http-helper'
+import { badRequest, ok, serverError } from '../../helpers/http-helper'
 import { HttpRequest } from '../../protocols/http'
 import { IValidation } from '../../protocols/validation'
 import { SignUpController } from './signup'
@@ -101,5 +101,10 @@ describe('SignUpController', () => {
     })
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError())
+  })
+  it('Should return an account if addAccount throws', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(ok(makeFakeAccount()))
   })
 })
