@@ -1,5 +1,8 @@
-import { ValidationComposite } from "../../../presentation/helpers/validation-composite";
+import { ValidationComposite } from "../../../presentation/helpers/validations/validation-composite";
+import { IValidation } from "../../../presentation/protocols/validation";
 
 export const makeSignUpValidation = (): ValidationComposite => {
-  return new ValidationComposite([])
+  const validations: IValidation[] = []
+  
+  return new ValidationComposite(validations)
 }

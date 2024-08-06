@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { IValidation } from "../protocols/validation"
-import { ValidationComposite } from "./validation-composite"
+import { IValidation } from "../../protocols/validation"
+import { ValidationComposite } from "../validations/validation-composite"
 
 interface SutTypes {
   sut: ValidationComposite
