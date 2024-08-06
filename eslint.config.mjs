@@ -8,6 +8,5 @@ export default [
   {languageOptions: { globals: globals.node }},
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
-  {extends: ["eslint:recommended", "plugin:prettier/recommended"]},
-  {rules: {"prettier/prettier": "error"}}
+  {ignores: ['node_modules/', 'dist', '*.js', 'coverage']}
 ];
