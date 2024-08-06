@@ -35,4 +35,10 @@ describe('ValidationComposite', () => {
     sut.validate({ field: 'any_field' })
     expect(validationSpy).toHaveBeenCalledWith({ field: 'any_field' })
   })
+  it('Should return an error if any validation fails', () => {
+    const { sut, validations } = makeSut()
+    jest.spyOn(validations[0], 'validate').mockReturnValueOnce(new Error('expected_error'))
+    const error = sut.validate({ field: 'any_field' })
+    expect(error).toEqual(new Error('expected_error'))
+  })
 })
