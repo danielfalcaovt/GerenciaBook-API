@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { badRequest } from '../../helpers/http-helper'
 import { HttpRequest } from '../../protocols/http'
 import { IValidation } from '../../protocols/validation'
 import { SignUpController } from './signup'
@@ -40,20 +41,13 @@ describe('SignUpController', () => {
     it('Should call validation with correct value', async () => {
         const { sut, validationStub } = makeSut()
         const validateSpy = jest.spyOn(validationStub, 'validate')
-        const httpRequest = {
-            body: {
-                name: 'any_name',
-                email: 'any_mail@mail.com',
-                password: 'any_password',
-                confirmPassword: 'any_password'
-            }
-        }
-        await sut.handle(httpRequest)
-        expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
+        await sut.handle(makeFakeRequest())
+        expect(validateSpy).toHaveBeenCalledWith(makeFakeRequest().body)
     })
     it('Should return an error if validation returns error', async () => {
         const { sut, validationStub } = makeSut()
         jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error('any error'))
-        await sut.handle(makeFakeRequest())
+        const error = await sut.handle(makeFakeRequest())
+        expect(error).toEqual(badRequest(new Error('any error')))
     })
 })
