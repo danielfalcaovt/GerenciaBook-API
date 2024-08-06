@@ -1,5 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { IAccount } from '../../../domain/protocols/account'
+import {
+  IAccountModel,
+  IAddAccount
+} from '../../../domain/usecases/add-account'
 import { badRequest, serverError } from '../../helpers/http-helper'
 import { HttpRequest } from '../../protocols/http'
 import { IValidation } from '../../protocols/validation'
@@ -8,14 +13,17 @@ import { SignUpController } from './signup'
 interface SutTypes {
   sut: SignUpController
   validationStub: IValidation
+  addAccountStub: IAddAccount
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = makeValidationStub()
-  const sut = new SignUpController(validationStub)
+  const addAccountStub = makeAddAccountStub()
+  const sut = new SignUpController(validationStub, addAccountStub)
   return {
     sut,
-    validationStub
+    validationStub,
+    addAccountStub
   }
 }
 
@@ -27,6 +35,22 @@ const makeValidationStub = (): IValidation => {
   }
   return new ValidationStub()
 }
+
+const makeAddAccountStub = (): IAddAccount => {
+  class AddAccountStub implements IAddAccount {
+    add(account: IAccountModel): Promise<IAccount> {
+      return new Promise((resolve) => resolve(makeFakeAccount()))
+    }
+  }
+  return new AddAccountStub()
+}
+
+const makeFakeAccount = (): IAccount => ({
+    id: 'any_id',
+    name: 'any_name',
+    email: 'any_mail@mail.com',
+    password: 'any_password'
+})
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
@@ -59,5 +83,15 @@ describe('SignUpController', () => {
     })
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError())
+  })
+  it('Should call addAccount with correct values', async () => {
+    const { sut, addAccountStub } = makeSut()
+    const addSpy = jest.spyOn(addAccountStub, 'add')
+    await sut.handle(makeFakeRequest())
+    expect(addSpy).toHaveBeenCalledWith({
+      name: 'any_name',
+      email: 'any_mail@mail.com',
+      password: 'any_password'
+    })
   })
 })
