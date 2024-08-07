@@ -19,4 +19,11 @@ describe('EmailValidator', () => {
     const response = sut.isValid('valid_mail')
     expect(response).toBe(true)
   })
+  it('Should throw if validator throws', () => {
+    const sut = new EmailValidator()
+    jest.spyOn(validator, 'isEmail').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    expect(sut.isValid).toThrow()
+  })
 })
