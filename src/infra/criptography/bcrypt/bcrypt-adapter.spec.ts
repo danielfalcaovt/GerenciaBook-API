@@ -23,4 +23,9 @@ describe('BcryptAdapter', () => {
     await sut.hash('any_value')
     expect(hashSpy).toHaveBeenCalledWith('any_value', salt)
   })
+  it('Should return hashed value on succeed', async () => {
+    const sut = makeSut()
+    const response = await sut.hash('any_value')
+    expect(response).toBe('any_hash')
+  })
 })
