@@ -34,7 +34,7 @@ describe('EmailValidation', () => {
     sut.validate({email: 'any_mail'})
     expect(isValidSpy).toHaveBeenCalledWith('any_mail')
   })
-  it('Should return an error if isValid returns false', () => {
+  it('Should return an InvalidParamError if isValid returns false', () => {
     const { sut, emailValidatorStub } = makeSut()
     jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false)
     const error = sut.validate('any_mail')
