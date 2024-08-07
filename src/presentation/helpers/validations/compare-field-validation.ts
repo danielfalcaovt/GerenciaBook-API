@@ -10,8 +10,7 @@ export class CompareFieldValidation implements IValidation {
   validate(data: any): Error | null {
     if (data[this.firstField] !== data[this.secondField]) {
       return new InvalidParamError('confirmPassword')
-    } else {
-      return null
     }
+    return null
   }
 }

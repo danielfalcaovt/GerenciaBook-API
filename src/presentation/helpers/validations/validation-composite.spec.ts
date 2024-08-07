@@ -31,15 +31,17 @@ const makeValidationStub = (): IValidation => {
 describe('ValidationComposite', () => {
   it('Should call validation with correct values', () => {
     const { sut, validations } = makeSut()
+    const expectedField = { field: 'any_field' }
     const validationSpy = jest.spyOn(validations[0], 'validate')
-    sut.validate({ field: 'any_field' })
-    expect(validationSpy).toHaveBeenCalledWith({ field: 'any_field' })
+    sut.validate(expectedField)
+    expect(validationSpy).toHaveBeenCalledWith(expectedField)
   })
   it('Should return an error if any validation fails', () => {
     const { sut, validations } = makeSut()
-    jest.spyOn(validations[0], 'validate').mockReturnValueOnce(new Error('expected_error'))
+    const expectedError = new Error('expected_error')
+    jest.spyOn(validations[0], 'validate').mockReturnValueOnce(expectedError)
     const error = sut.validate({ field: 'any_field' })
-    expect(error).toEqual(new Error('expected_error'))
+    expect(error).toEqual(expectedError)
   })
   it('Should return the first error received', () => {
     const { sut, validations } = makeSut()
