@@ -10,4 +10,12 @@ describe('CompareFieldValidation', () => {
     })
     expect(response).toEqual(new InvalidParamError('confirmPassword'))
   })
+  it('Should not return if validation succeed', () => {
+    const sut = new CompareFieldValidation('firstField', 'secondField')
+    const response = sut.validate({
+      firstField: 'any_value',
+      secondField: 'any_value'
+    })
+    expect(response).toBeFalsy()
+  })
 })
