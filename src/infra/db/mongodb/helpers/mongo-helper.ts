@@ -1,7 +1,7 @@
  
 /* eslint-disable @typescript-eslint/no-explicit-any */
  
-import { Collection, MongoClient, ObjectId } from "mongodb"
+import { ollection, MongoClient, ObjectId } from "mongodb"
 
 export const MongoHelper = {
     db: { connected: false, client: null as unknown as MongoClient },
@@ -18,7 +18,7 @@ export const MongoHelper = {
         await this.db.client.close()
         this.db.connected=false
     },
-    async getCollection(name: string): Promise<Collection> {
+    async getCollection(name: string): Promise<ollection> {
         if (!this.db.connected) {
             await this.connect(this.uri)
         }

@@ -3,12 +3,8 @@
  * https://jestjs.io/docs/configuration
  */
 
-import type {Config} from 'jest';
-
-const config: Config = {
-  clearMocks: true,
-  collectCoverage: true,
-  coverageProvider: "v8",
+/** @type {import('jest').Config} */
+const config = {
   roots: ['<rootDir>/src'],
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
@@ -16,10 +12,10 @@ const config: Config = {
   ],
   coverageDirectory: 'coverage',
   testEnvironment: 'node',
-  /* preset: '@shelf/jest-mongodb', */
+  preset: '@shelf/jest-mongodb',
   transform: {
     '.+\\.ts$': 'ts-jest'
   }
-};
+}
 
-export default config;
+module.exports = config;
