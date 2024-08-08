@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
+    "test:verbose": "jest --passWithNoTests",
     "prepare": "husky",
     "test:staged": "npm test -- --findRelatedTests ./src"
   },
