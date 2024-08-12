@@ -44,16 +44,24 @@ describe('AddAccountRepository', () => {
     })
   })
   describe('load', () => {
-    it('Should return an account if loadByEmail found', async () => {
+    it('Should return an account if account was found', async () => {
       await accountCollection.insertOne(makeFakeAccount())
       const sut = makeSut()
       const foundAccount = await sut.load('any_email@mail.com')
       expect(foundAccount?.email).toBe('any_email@mail.com')
     })
-    it('Should not return if loadByEmail fail', async () => {
+    it('Should not return if account not found fail', async () => {
       const sut = makeSut()
       const foundAccount = await sut.load('any_email')
       expect(foundAccount).toBeFalsy()
+    })
+    it('Should throw if mongo throws', async () => {
+      const sut = makeSut()
+      jest.spyOn(MongoHelper, 'getCollection').mockImplementationOnce(() => {
+        throw new Error()
+      })
+      const promise = sut.load(makeFakeAccount().email)
+      expect(promise).rejects.toThrow()
     })
   })
 })
