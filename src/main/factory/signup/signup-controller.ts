@@ -9,6 +9,7 @@ export const makeSignUpController = (): SignUpController => {
   const hasher = new BcryptAdapter(salt)
   const AddAccountRepository = new MongoAccountRepository()
   const addAccount = new DbAddAccount(hasher, AddAccountRepository)
-  const signUpController = new SignUpController(makeSignUpValidation(), addAccount)
+  const loadByEmail = new MongoAccountRepository()
+  const signUpController = new SignUpController(makeSignUpValidation(), addAccount, loadByEmail)
   return signUpController
 }
