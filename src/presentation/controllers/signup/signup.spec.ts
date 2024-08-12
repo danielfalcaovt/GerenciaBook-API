@@ -122,6 +122,12 @@ describe('SignUpController', () => {
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(ok(makeFakeAccount()))
   })
+  it('Should call loadByEmail with correct value', async () => {
+    const { sut, loadByEmailStub } = makeSut()
+    const loadSpy = jest.spyOn(loadByEmailStub, 'load')
+    await sut.handle(makeFakeRequest())
+    expect(loadSpy).toHaveBeenCalledWith('any_mail@mail.com')
+  })
   it('Should return 400 if email already exist', async () => {
     const { sut, loadByEmailStub } = makeSut()
     jest.spyOn(loadByEmailStub, 'load').mockReturnValueOnce(new Promise(resolve => resolve(makeFakeAccount())))
