@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { ILoadByEmail } from '../../../data/protocols/db/iload-by-email'
 import { IAccount } from '../../../domain/protocols/account'
 import {
   IAccountModel,
@@ -9,21 +10,25 @@ import { badRequest, ok, serverError } from '../../helpers/http-helper'
 import { HttpRequest } from '../../protocols/http'
 import { IValidation } from '../../protocols/validation'
 import { SignUpController } from './signup'
+import { InvalidParamError } from '../../errors/invalid-param-error'
 
 interface SutTypes {
   sut: SignUpController
   validationStub: IValidation
   addAccountStub: IAddAccount
+  loadByEmailStub: ILoadByEmail
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = makeValidationStub()
   const addAccountStub = makeAddAccountStub()
-  const sut = new SignUpController(validationStub, addAccountStub)
+  const loadByEmailStub = makeLoadByEmailStub()
+  const sut = new SignUpController(validationStub, addAccountStub, loadByEmailStub)
   return {
     sut,
     validationStub,
-    addAccountStub
+    addAccountStub,
+    loadByEmailStub
   }
 }
 
@@ -35,6 +40,16 @@ const makeValidationStub = (): IValidation => {
   }
   return new ValidationStub()
 }
+
+const makeLoadByEmailStub = (): ILoadByEmail => {
+  class LoadByEmailStub implements ILoadByEmail {
+    load(email: string): Promise<IAccount | null> {
+      return new Promise(resolve => resolve(null))
+    }
+  }
+  return new LoadByEmailStub()
+}
+
 
 const makeAddAccountStub = (): IAddAccount => {
   class AddAccountStub implements IAddAccount {
@@ -106,5 +121,11 @@ describe('SignUpController', () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(ok(makeFakeAccount()))
+  })
+  it('Should return 400 if email already exist', async () => {
+    const { sut, loadByEmailStub } = makeSut()
+    jest.spyOn(loadByEmailStub, 'load').mockReturnValueOnce(new Promise(resolve => resolve(makeFakeAccount())))
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(badRequest(new InvalidParamError('email')))
   })
 })
