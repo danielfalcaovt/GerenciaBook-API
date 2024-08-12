@@ -12,4 +12,14 @@ describe('ContentType', () => {
       .get('/test_contenttype')
       .expect('content-type', /json/)
   })
+  it('Should be xml if called', async () => {
+    app.get('/test_contentxml', (req: Request, res: Response) => {
+      res.type('xml')
+      res.send({})
+    })
+
+    await request(app)
+      .get('/test_contentxml')
+      .expect('content-type', /xml/)
+  })
 })
