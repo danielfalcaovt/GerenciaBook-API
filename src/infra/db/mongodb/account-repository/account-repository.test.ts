@@ -28,23 +28,32 @@ describe('AddAccountRepository', () => {
     accountCollection = await MongoHelper.getCollection('accounts')
     await accountCollection.deleteMany({})
   })
+  describe('add', () => {
 
-  it('Should return an account on succeed', async () => {
-    const sut = makeSut()
-    const account = await sut.add(makeFakeAccount())
-    expect(account.id).toBeTruthy()
-    expect(account.email).toBe('any_email@mail.com')
+    it('Should return an account on succeed', async () => {
+      const sut = makeSut()
+      const account = await sut.add(makeFakeAccount())
+      expect(account.id).toBeTruthy()
+      expect(account.email).toBe('any_email@mail.com')
+    })
+    it('Should throw if add throws', async () => {
+      const sut = makeSut()
+      jest.spyOn(MongoHelper, 'getCollection').mockImplementationOnce(async () => Promise.reject(new Error()))
+      const promise = sut.add(makeFakeAccount())
+      expect(promise).rejects.toThrow()
+    })
   })
-  it('Should throw if add throws', async () => {
-    const sut = makeSut()
-    jest.spyOn(MongoHelper, 'getCollection').mockImplementationOnce(async () => Promise.reject(new Error()))
-    const promise = sut.add(makeFakeAccount())
-    expect(promise).rejects.toThrow()
-  })
-  it('Should return an account if loadByEmail found', async () => {
-    await accountCollection.insertOne(makeFakeAccount())
-    const sut = makeSut()
-    const foundAccount = await sut.load('any_email@mail.com')
-    expect(foundAccount?.email).toBe('any_email@mail.com')
+  describe('load', () => {
+    it('Should return an account if loadByEmail found', async () => {
+      await accountCollection.insertOne(makeFakeAccount())
+      const sut = makeSut()
+      const foundAccount = await sut.load('any_email@mail.com')
+      expect(foundAccount?.email).toBe('any_email@mail.com')
+    })
+    it('Should not return if loadByEmail fail', async () => {
+      const sut = makeSut()
+      const foundAccount = await sut.load('any_email')
+      expect(foundAccount).toBeFalsy()
+    })
   })
 })
