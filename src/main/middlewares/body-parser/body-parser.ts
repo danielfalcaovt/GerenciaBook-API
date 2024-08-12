@@ -1,5 +1,3 @@
-import { Express, json } from "express"
+import { json } from "express"
 
-export default (app: Express) => {
-  app.use(json())
-}
+export default json()
