@@ -7,7 +7,7 @@
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:int": "npm run test -- -c ./jest-integration-config.js",
     "test:verbose": "jest --passWithNoTests",
-    "prepare": "husky",
+    "build": "rimraf ./dist && tsc",
     "test:staged": "npm test -- --findRelatedTests ./src"
   },
   "keywords": [],
