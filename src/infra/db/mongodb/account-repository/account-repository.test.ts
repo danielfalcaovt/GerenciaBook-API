@@ -2,7 +2,7 @@ import { IAccountModel } from "../../../../domain/usecases/add-account"
 import { MongoHelper } from '../helpers/mongo-helper'
 import { MongoAccountRepository } from './account-repository'
 import env from '../../../../main/config/env'
-import { ollection } from 'mongodb'
+import { Collection } from 'mongodb'
 
 const makeFakeAccount = (): IAccountModel => ({
   email: 'any_mail@mail.com',
@@ -10,7 +10,7 @@ const makeFakeAccount = (): IAccountModel => ({
   password: 'any_password'
 })
 
-let accountCollection: ollection
+let accountCollection: Collection
 
 describe('AddAccountRepository', () => {
   const makeSut = (): MongoAccountRepository => {
