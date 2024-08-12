@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import { Controller } from "../../presentation/protocols/controller";
 
 export default (controller: Controller) => {
-  return (req: Request, res: Response) => {
-    const response = controller.handle(req.body)
-    return res.json(response)
+  return async (req: Request, res: Response) => {
+    const response = await controller.handle(req)
+    return res.json(response.body)
   } 
 }
