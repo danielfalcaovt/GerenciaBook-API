@@ -11,11 +11,12 @@ export class LoginController implements Controller {
   ) {}
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-
       const error = this.validation.validate(httpRequest.body)
       if (error) {
         return new Promise(resolve => resolve(badRequest(error)))
       }
+      const user = httpRequest.body
+      await this.authentication.auth(user)
       return new Promise(resolve => resolve(ok({})))
     } catch (err) {
       console.error(err)
