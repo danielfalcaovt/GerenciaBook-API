@@ -16,11 +16,11 @@ export class LoginController implements Controller {
         return new Promise(resolve => resolve(badRequest(error)))
       }
       const user = httpRequest.body
-      const account = await this.authentication.auth(user)
-      if (!account) {
+      const token = await this.authentication.auth(user)
+      if (!token) {
         return new Promise(resolve => resolve(unauthorized()))
       }
-      return new Promise(resolve => resolve(ok({})))
+      return new Promise(resolve => resolve(ok(token)))
     } catch (err) {
       console.error(err)
       return serverError()
