@@ -69,4 +69,10 @@ describe('Login Controller', () => {
     const error = await sut.handle(makeFakeRequest()) 
     expect(error).toEqual(serverError())
   })
+  it('Should call authentication with correct values', async () => {
+    const { sut, authenticationStub } = makeSut()
+    const authSpy = jest.spyOn(authenticationStub, 'auth')
+    await sut.handle(makeFakeRequest())
+    expect(authSpy).toHaveBeenCalledWith(makeFakeRequest().body)
+  })
 })
