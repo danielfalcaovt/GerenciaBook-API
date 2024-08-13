@@ -4,7 +4,7 @@ import { IValidation } from "../../protocols/validation"
 import { AuthenticationModel, IAuthentication } from '../../../domain/usecases/authentication'
 import { LoginController } from './login'
 import { HttpRequest } from "../../protocols/http"
-import { badRequest } from "../../helpers/http-helper"
+import { badRequest, serverError } from "../../helpers/http-helper"
 
 interface SutTypes {
   sut: LoginController
@@ -60,5 +60,13 @@ describe('Login Controller', () => {
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error('random_error'))
     const error = await sut.handle(makeFakeRequest())
     expect(error).toEqual(badRequest(new Error('random_error')))
+  })
+  it('Should return 500 if validation throws', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const error = await sut.handle(makeFakeRequest()) 
+    expect(error).toEqual(serverError())
   })
 })
