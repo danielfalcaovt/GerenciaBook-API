@@ -4,7 +4,7 @@ import { IValidation } from "../../protocols/validation"
 import { AuthenticationModel, IAuthentication } from '../../../domain/usecases/authentication'
 import { LoginController } from './login'
 import { HttpRequest } from "../../protocols/http"
-import { badRequest, serverError } from "../../helpers/http-helper"
+import { badRequest, serverError, unauthorized } from "../../helpers/http-helper"
 
 interface SutTypes {
   sut: LoginController
@@ -74,5 +74,11 @@ describe('Login Controller', () => {
     const authSpy = jest.spyOn(authenticationStub, 'auth')
     await sut.handle(makeFakeRequest())
     expect(authSpy).toHaveBeenCalledWith(makeFakeRequest().body)
+  })
+  it('Should return unauthorized if authentication fail', async () => {
+    const { sut, authenticationStub } = makeSut()
+    jest.spyOn(authenticationStub, 'auth').mockReturnValueOnce(new Promise(resolve => resolve(null)))
+    const error = await sut.handle(makeFakeRequest())
+    expect(error).toEqual(unauthorized())
   })
 })
