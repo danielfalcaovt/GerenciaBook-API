@@ -4,6 +4,12 @@ services:
     image: node:20
     working_dir: /usr/src/gerenciabook
     restart: always
+    environment:
+      - PG_PORT=5432
+      - PG_USER=postgres
+      - PG_HOST=my-postgres
+      - PG_PASSWORD=postgres
+      - PG_DATABASE=GerenciaBook
     volumes:
       - ./dist:/usr/src/gerenciabook/dist
       - ./package.json:/usr/src/gerenciabook/package.json
@@ -12,4 +18,9 @@ services:
       - "3000:3000"
       - "9222:9222"
     command: bash -c "npm install --only=prod --force && npm run debug"
-    
+    networks:
+      - my-network
+networks:
+  my-network:
+    name: my-network
+    external: true
