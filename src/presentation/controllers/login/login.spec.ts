@@ -4,7 +4,7 @@ import { IValidation } from "../../protocols/validation"
 import { AuthenticationModel, IAuthentication } from '../../../domain/usecases/authentication'
 import { LoginController } from './login'
 import { HttpRequest } from "../../protocols/http"
-import { badRequest, serverError, unauthorized } from "../../helpers/http-helper"
+import { badRequest, ok, serverError, unauthorized } from "../../helpers/http-helper"
 
 interface SutTypes {
   sut: LoginController
@@ -88,5 +88,10 @@ describe('Login Controller', () => {
     })
     const error = await sut.handle(makeFakeRequest())
     expect(error).toEqual(serverError())
+  })
+  it('Should return a token on succeed', async () => {
+    const { sut } = makeSut()
+    const token = await sut.handle(makeFakeRequest())
+    expect(token).toEqual(ok('any_token'))
   })
 })
