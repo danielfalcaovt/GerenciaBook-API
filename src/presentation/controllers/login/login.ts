@@ -1,5 +1,5 @@
 import { IAuthentication } from "../../../domain/usecases/authentication";
-import { badRequest, ok, serverError } from "../../helpers/http-helper";
+import { badRequest, ok, serverError, unauthorized } from "../../helpers/http-helper";
 import { Controller } from "../../protocols/controller";
 import { HttpRequest, HttpResponse } from "../../protocols/http";
 import { IValidation } from "../../protocols/validation";
@@ -16,7 +16,10 @@ export class LoginController implements Controller {
         return new Promise(resolve => resolve(badRequest(error)))
       }
       const user = httpRequest.body
-      await this.authentication.auth(user)
+      const account = await this.authentication.auth(user)
+      if (!account) {
+        return new Promise(resolve => resolve(unauthorized()))
+      }
       return new Promise(resolve => resolve(ok({})))
     } catch (err) {
       console.error(err)
