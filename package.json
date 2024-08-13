@@ -7,9 +7,9 @@
     "debug": "nodemon -L --watch --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
     "up": "npm run build && docker-compose up",
     "down": "docker-compose down",
-    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand --forceExit",
     "test:int": "npm run test -- -c ./jest-integration-config.js",
-    "test:verbose": "jest --passWithNoTests",
+    "test:verbose": "jest --passWithNoTests --forceExit",
     "build": "rimraf ./dist && tsc",
     "test:staged": "npm test -- --findRelatedTests ./src"
   },

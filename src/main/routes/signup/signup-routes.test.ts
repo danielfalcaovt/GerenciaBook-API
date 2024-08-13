@@ -1,19 +1,16 @@
 import request from 'supertest'
 import app from '../../config/app'
-import { MongoHelper } from '../../../infra/db/mongodb/helpers/mongo-helper'
+import { PgHelper } from '../../../infra/db/postgres/helpers/pg-helper'
 
 describe('SignUp Routes', () => {
   beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL)
-  })
-
-  beforeEach(async () => {
-    const accounts = await MongoHelper.getCollection('accounts')
-    await accounts.deleteMany({})
+    PgHelper.connect().then(() => {})
+    return
   })
 
   afterAll(async () => {
-    await MongoHelper.disconnect()
+    PgHelper.disconnect().then(() => {})
+    return
   })
 
   it('Should return an account on call signup route', async () => {

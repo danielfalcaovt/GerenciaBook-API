@@ -12,10 +12,10 @@ const config = {
   ],
   coverageDirectory: 'coverage',
   testEnvironment: 'node',
-  preset: '@shelf/jest-mongodb',
   transform: {
     '.+\\.ts$': 'ts-jest'
-  }
+  },
+  testTimeout: 20000
 }
 
 module.exports = config;

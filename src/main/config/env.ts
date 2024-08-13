@@ -1,4 +1,11 @@
+import * as dotenv from 'dotenv'
+dotenv.config()
+
 export default {
-  MONGO_URL: process.env.MONGO_URL || 'mongodb://127.0.0.1:27017' /* || 'mongodb://mongo:27017' docker */,
+  PG_HOST: process.env.PG_HOST || 'localhost',
+  PG_USER: process.env.PG_USER || 'postgres',
+  PG_DATABASE: process.env.PG_DATABASE,
+  PG_PORT: Number(process.env.PG_PORT),
+  PG_PASSWORD: process.env.PG_PASSWORD,
   PORT: 3000
 }
