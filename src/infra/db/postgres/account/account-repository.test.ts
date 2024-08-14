@@ -48,5 +48,13 @@ describe('PgAccountRepository', () => {
       const error = await sut.load('inexistent_email@mail.com')
       expect(error).toBeFalsy()
     })
+    it('Should throw if query throws', async () => {
+      const sut = new PgAccountRepository()
+      jest.spyOn(PgHelper, 'query').mockImplementationOnce(() => {
+        throw new Error()
+      })
+      const promise = sut.load('any_mail@mail.com')
+      expect(promise).rejects.toThrow()
+    })
   })
 })
