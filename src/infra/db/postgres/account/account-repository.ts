@@ -1,8 +1,8 @@
-import { IAddAccountRepository } from "../../../data/protocols/db/iadd-account-repository";
-import { ILoadByEmail } from "../../../data/protocols/db/iload-by-email";
-import { IAccount } from "../../../domain/protocols/account";
-import { IAccountModel } from "../../../domain/usecases/add-account";
-import { PgHelper } from "./helpers/pg-helper";
+import { IAddAccountRepository } from "../../../../data/protocols/db/iadd-account-repository";
+import { ILoadByEmail } from "../../../../data/protocols/db/iload-by-email";
+import { IAccount } from "../../../../domain/protocols/account";
+import { IAccountModel } from "../../../../domain/usecases/add-account";
+import { PgHelper } from "../helpers/pg-helper";
 
 export class PgAccountRepository implements IAddAccountRepository, ILoadByEmail {
   async add(account: IAccountModel): Promise<IAccount> {
