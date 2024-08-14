@@ -43,5 +43,10 @@ describe('PgAccountRepository', () => {
       expect(account?.id).toBeTruthy()
       expect(account?.email).toBe('any_mail@mail.com')
     })
+    it('Should not return on fail', async () => {
+      const sut = new PgAccountRepository()
+      const error = await sut.load('inexistent_email@mail.com')
+      expect(error).toBeFalsy()
+    })
   })
 })
