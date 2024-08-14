@@ -57,4 +57,15 @@ describe('PgAccountRepository', () => {
       expect(promise).rejects.toThrow()
     })
   })
+
+
+  describe('update access token', () => {
+    it('Should call query with correct values', async () => {
+      const user = await PgHelper.query('INSERT INTO users(name, email, password) VALUES($1, $2, $3) RETURNING *', ['any_name', 'any_mail@mail.com', 'any_password'])
+      const sut = new PgAccountRepository()
+      await sut.update(user.rows[0].id, 'any_token')
+      const result = await PgHelper.query('SELECT * FROM users WHERE id = $1', [user.rows[0].id])
+      expect(result.rows[0].token).toBe('any_token')
+    })
+  })
 })
