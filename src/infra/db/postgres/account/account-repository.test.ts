@@ -78,5 +78,13 @@ describe('PgAccountRepository', () => {
       await sut.update(user.rows[0].id, 'any_token')
       expect(querySpy).toHaveBeenCalledWith(expect.anything(), ['any_token', expect.anything()])
     })
+    it('Should throw if query throws', async () => {
+      const sut = new PgAccountRepository()
+      jest.spyOn(PgHelper, 'query').mockImplementationOnce(() => {
+        throw new Error()
+      })
+      const promise = sut.update('anything', 'any_token')
+      expect(promise).rejects.toThrow()
+    })
   })
 })
