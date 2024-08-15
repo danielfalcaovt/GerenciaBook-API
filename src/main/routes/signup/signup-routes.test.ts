@@ -8,6 +8,11 @@ describe('SignUp Routes', () => {
     return
   })
 
+  afterEach(async () => {
+    PgHelper.query('DELETE FROM users').then(() => {})
+    return
+  })
+
   afterAll(async () => {
     PgHelper.disconnect().then(() => {})
     return
