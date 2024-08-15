@@ -6,11 +6,7 @@ import {
   IAccountModel,
   IAddAccount
 } from '../../../domain/usecases/add-account'
-import { badRequest, ok, serverError } from '../../helpers/http-helper'
-import { HttpRequest } from '../../protocols/http'
-import { IValidation } from '../../protocols/validation'
-import { SignUpController } from './signup'
-import { InvalidParamError } from '../../errors/invalid-param-error'
+import { SignUpController, HttpRequest, IValidation, InvalidParamError, badRequest, ok, serverError } from './signup-protocols'
 
 interface SutTypes {
   sut: SignUpController
