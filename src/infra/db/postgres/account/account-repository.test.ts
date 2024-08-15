@@ -15,6 +15,11 @@ describe('PgAccountRepository', () => {
     return
   })
 
+  afterEach(async () => {
+    PgHelper.query('DELETE FROM users').then(() => {})
+    return
+  })
+
   afterAll(async () => {
     PgHelper.disconnect().then(() => {})
     return
@@ -58,14 +63,20 @@ describe('PgAccountRepository', () => {
     })
   })
 
-
   describe('update access token', () => {
-    it('Should call query with correct values', async () => {
+    it('Should update the token on succeed', async () => {
       const user = await PgHelper.query('INSERT INTO users(name, email, password) VALUES($1, $2, $3) RETURNING *', ['any_name', 'any_mail@mail.com', 'any_password'])
       const sut = new PgAccountRepository()
       await sut.update(user.rows[0].id, 'any_token')
       const result = await PgHelper.query('SELECT * FROM users WHERE id = $1', [user.rows[0].id])
       expect(result.rows[0].token).toBe('any_token')
+    })
+    it('Should call query with correct values', async () => {
+      const user = await PgHelper.query('INSERT INTO users(name, email, password) VALUES($1, $2, $3) RETURNING *', ['any_name', 'any_mail@mail.com', 'any_password'])
+      const sut = new PgAccountRepository()
+      const querySpy = jest.spyOn(PgHelper, 'query')
+      await sut.update(user.rows[0].id, 'any_token')
+      expect(querySpy).toHaveBeenCalledWith(expect.anything(), ['any_token', expect.anything()])
     })
   })
 })
