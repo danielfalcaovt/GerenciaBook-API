@@ -7,8 +7,13 @@ describe('SignUp Routes', () => {
     PgHelper.connect().then(() => {})
     return
   })
-
+  
   afterEach(async () => {
+    PgHelper.query('DELETE FROM users').then(() => {})
+    return
+  })
+
+  beforeEach(async () => {
     PgHelper.query('DELETE FROM users').then(() => {})
     return
   })

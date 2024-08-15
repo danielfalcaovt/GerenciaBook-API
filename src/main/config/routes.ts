@@ -8,5 +8,12 @@ export default async (app: Express) => {
       (await import(`../routes/signup/${file}`)).default(router)
     }
   })
+
+  fs.readdirSync(`${__dirname}/../routes/login`).map(async route => {
+    if (!route.includes('.test') && !route.includes('.map')) {
+      (await import(`../routes/login/${route}`)).default(router)
+    }
+  })
+
   app.use('/api', router)
 }

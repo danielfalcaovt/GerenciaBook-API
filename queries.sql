@@ -5,5 +5,5 @@ CREATE TABLE users (
   name varchar(100) NOT NULL,
   email varchar(100) NOT NULL,
   password varchar(100) NOT NULL,
-  accessToken varchar(150)
+  accessToken varchar(250)
 )
