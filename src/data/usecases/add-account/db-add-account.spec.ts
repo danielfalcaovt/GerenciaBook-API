@@ -2,7 +2,7 @@
 import { IAccount } from '../../../domain/protocols/account'
 import { IAccountModel, IAddAccount } from '../../../domain/usecases/user-db/add-account'
 import { IHasher } from '../../protocols/cryptography/ihasher'
-import { IAddAccountRepository } from '../../protocols/db/iadd-account-repository'
+import { IAddAccountRepository } from '../../protocols/db/users/iadd-account-repository'
 import { DbAddAccount } from './db-add-account'
 
 interface SutTypes {

@@ -1,6 +1,6 @@
-import { IAddAccountRepository } from "../../../../data/protocols/db/iadd-account-repository";
-import { ILoadByEmail } from "../../../../data/protocols/db/iload-by-email";
-import { IUpdateAccessToken } from "../../../../data/protocols/db/iupdate-access-token";
+import { IAddAccountRepository } from "../../../../data/protocols/db/users/iadd-account-repository";
+import { ILoadByEmail } from "../../../../data/protocols/db/users/iload-by-email";
+import { IUpdateAccessToken } from "../../../../data/protocols/db/users/iupdate-access-token";
 import { IAccount } from "../../../../domain/protocols/account";
 import { IAccountModel } from "../../../../domain/usecases/user-db/add-account";
 import { PgHelper } from "../helpers/pg-helper";

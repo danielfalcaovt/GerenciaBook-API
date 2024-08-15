@@ -3,8 +3,8 @@
 import { IAccount } from '../../../domain/protocols/account'
 import { IComparer } from '../../protocols/cryptography/icomparer'
 import { ITokenGenerator } from '../../protocols/cryptography/itoken-generator'
-import { ILoadByEmail } from '../../protocols/db/iload-by-email'
-import { IUpdateAccessToken } from '../../protocols/db/iupdate-access-token'
+import { ILoadByEmail } from '../../protocols/db/users/iload-by-email'
+import { IUpdateAccessToken } from '../../protocols/db/users/iupdate-access-token'
 import { DbAuthentication } from './db-authentication'
 
 interface SutTypes {

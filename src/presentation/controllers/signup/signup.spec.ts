@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ILoadByEmail } from '../../../data/protocols/db/iload-by-email'
+import { ILoadByEmail } from '../../../data/protocols/db/users/iload-by-email'
 import { IAccount } from '../../../domain/protocols/account'
 import {
   IAccountModel,

@@ -1,8 +1,8 @@
 import { AuthenticationModel, IAuthentication } from '../../../domain/usecases/user-db/authentication'
 import { IComparer } from '../../protocols/cryptography/icomparer'
 import { ITokenGenerator } from '../../protocols/cryptography/itoken-generator'
-import { IUpdateAccessToken } from '../../protocols/db/iupdate-access-token'
-import { ILoadByEmail } from '../../protocols/db/iload-by-email'
+import { IUpdateAccessToken } from '../../protocols/db/users/iupdate-access-token'
+import { ILoadByEmail } from '../../protocols/db/users/iload-by-email'
 
 export class DbAuthentication implements IAuthentication {
   constructor(

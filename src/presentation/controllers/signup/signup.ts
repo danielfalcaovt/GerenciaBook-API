@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { badRequest, ok, serverError,Controller, HttpRequest, HttpResponse, IValidation, InvalidParamError, unauthorized } from './signup-protocols'
 import { IAddAccount } from '../../../domain/usecases/user-db/add-account'
-import { ILoadByEmail } from '../../../data/protocols/db/iload-by-email'
+import { ILoadByEmail } from '../../../data/protocols/db/users/iload-by-email'
 
 export class SignUpController implements Controller {
   constructor(
