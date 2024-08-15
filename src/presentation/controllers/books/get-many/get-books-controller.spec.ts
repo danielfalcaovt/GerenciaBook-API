@@ -42,4 +42,10 @@ describe('GetBooksController', () => {
     await sut.handle({})
     expect(getSpy).toHaveBeenCalledTimes(1)
   })
+  it('Should return getBooks result', async () => {
+    const { sut } = makeSut()
+    const result = await sut.handle({})
+    expect(result.statusCode).toBe(200)
+    expect(result.body).toContainEqual(makeFakeBook())
+  })
 })
