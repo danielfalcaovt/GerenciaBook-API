@@ -1,4 +1,4 @@
-import { IAccountModel } from "../../../../domain/usecases/add-account"
+import { IAccountModel } from "../../../../domain/usecases/user-db/add-account"
 import { PgHelper } from '../helpers/pg-helper'
 import { PgAccountRepository } from './account-repository'
 

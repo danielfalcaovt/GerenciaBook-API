@@ -2,7 +2,7 @@ import { IAddAccountRepository } from "../../../../data/protocols/db/iadd-accoun
 import { ILoadByEmail } from "../../../../data/protocols/db/iload-by-email";
 import { IUpdateAccessToken } from "../../../../data/protocols/db/iupdate-access-token";
 import { IAccount } from "../../../../domain/protocols/account";
-import { IAccountModel } from "../../../../domain/usecases/add-account";
+import { IAccountModel } from "../../../../domain/usecases/user-db/add-account";
 import { PgHelper } from "../helpers/pg-helper";
 
 export class PgAccountRepository implements IAddAccountRepository, ILoadByEmail, IUpdateAccessToken {

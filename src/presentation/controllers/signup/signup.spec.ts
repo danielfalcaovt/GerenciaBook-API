@@ -5,7 +5,7 @@ import { IAccount } from '../../../domain/protocols/account'
 import {
   IAccountModel,
   IAddAccount
-} from '../../../domain/usecases/add-account'
+} from '../../../domain/usecases/user-db/add-account'
 import { SignUpController, HttpRequest, IValidation, InvalidParamError, badRequest, ok, serverError } from './signup-protocols'
 
 interface SutTypes {

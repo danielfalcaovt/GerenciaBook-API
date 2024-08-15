@@ -1,4 +1,4 @@
-import { IAuthentication } from "../../../domain/usecases/authentication";
+import { IAuthentication } from "../../../domain/usecases/user-db/authentication";
 import { Controller, HttpRequest, HttpResponse, IValidation, badRequest, ok, serverError, unauthorized, } from './login-protocols'
 
 export class LoginController implements Controller {

@@ -5,5 +5,12 @@ CREATE TABLE users (
   name varchar(100) NOT NULL,
   email varchar(100) NOT NULL,
   password varchar(100) NOT NULL,
-  accessToken varchar(250)
+  token varchar(250)
+)
+
+CREATE TABLE books (
+  id uuid gen_random_uuid() PRIMARY KEY,
+  book_name varchar(100) NOT NULL,
+  student_name varchar(100) NOT NULL,
+  lend_day DATE NOT NULL
 )

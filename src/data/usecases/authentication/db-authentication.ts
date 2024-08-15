@@ -1,4 +1,4 @@
-import { AuthenticationModel, IAuthentication } from '../../../domain/usecases/authentication'
+import { AuthenticationModel, IAuthentication } from '../../../domain/usecases/user-db/authentication'
 import { IComparer } from '../../protocols/cryptography/icomparer'
 import { ITokenGenerator } from '../../protocols/cryptography/itoken-generator'
 import { IUpdateAccessToken } from '../../protocols/db/iupdate-access-token'

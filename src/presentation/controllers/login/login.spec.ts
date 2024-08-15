@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { HttpRequest, IValidation, badRequest, ok, serverError, unauthorized, } from './login-protocols'
-import { AuthenticationModel, IAuthentication } from '../../../domain/usecases/authentication'
+import { AuthenticationModel, IAuthentication } from '../../../domain/usecases/user-db/authentication'
 import { LoginController } from './login'
 
 interface SutTypes {

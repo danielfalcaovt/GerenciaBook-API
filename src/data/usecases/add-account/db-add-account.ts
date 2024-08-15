@@ -1,5 +1,5 @@
 import { IAccount } from "../../../domain/protocols/account"
-import { IAccountModel, IAddAccount } from "../../../domain/usecases/add-account"
+import { IAccountModel, IAddAccount } from "../../../domain/usecases/user-db/add-account"
 import { IHasher } from "../../protocols/cryptography/ihasher"
 import { IAddAccountRepository } from "../../protocols/db/iadd-account-repository"
 
