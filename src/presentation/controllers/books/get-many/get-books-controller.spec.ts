@@ -1,5 +1,6 @@
 import { IBook } from '../../../../domain/protocols/book'
 import { IGetBooks } from '../../../../domain/usecases/books/get/iget-books'
+import { serverError } from '../books-protocols'
 import { GetBooksController } from './get-books-controller'
 
 interface SutTypes {
@@ -47,5 +48,13 @@ describe('GetBooksController', () => {
     const result = await sut.handle({})
     expect(result.statusCode).toBe(200)
     expect(result.body).toContainEqual(makeFakeBook())
+  })
+  it('Should return 500 if getBooks throws', async () => {
+    const { sut, getBooksStub } = makeSut()
+    jest.spyOn(getBooksStub, 'get').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const error = await sut.handle({})
+    expect(error).toEqual(serverError())
   })
 })
