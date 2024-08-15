@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IAccount } from '../../../domain/protocols/account'
-import { IHashComparer } from '../../protocols/cryptography/ihashcomparer'
+import { IComparer } from '../../protocols/cryptography/icomparer'
 import { ITokenGenerator } from '../../protocols/cryptography/itoken-generator'
 import { ILoadByEmail } from '../../protocols/db/iload-by-email'
 import { IUpdateAccessToken } from '../../protocols/db/iupdate-access-token'
@@ -12,7 +12,7 @@ interface SutTypes {
   updateAccessTokenStub: IUpdateAccessToken
   loadAccountStub: ILoadByEmail
   tokenGeneratorStub: ITokenGenerator
-  hashComparerStub: IHashComparer
+  hashComparerStub: IComparer
 }
 
 const makeSut = (): SutTypes => {
@@ -62,8 +62,8 @@ const makeLoadAccountByEmail = (): ILoadByEmail => {
   return _
 }
 
-const makeHashComparer = (): IHashComparer => {
-  class hashComparerStub implements IHashComparer {
+const makeHashComparer = (): IComparer => {
+  class hashComparerStub implements IComparer {
     compare(password: string, hash: string): Promise<boolean> {
       return new Promise((resolve) => resolve(true))
     }
