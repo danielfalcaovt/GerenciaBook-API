@@ -1,6 +1,6 @@
 import { DbAddAccount } from "../../../data/usecases/add-account/db-add-account";
 import { BcryptAdapter } from "../../../infra/criptography/bcrypt/bcrypt-adapter";
-import { PgAccountRepository } from "../../../infra/db/postgres/account-repository";
+import { PgAccountRepository } from "../../../infra/db/postgres/account/account-repository";
 import { SignUpController } from "../../../presentation/controllers/signup/signup";
 import { makeSignUpValidation } from "./signup-validation";
 

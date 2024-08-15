@@ -7,6 +7,6 @@ export default {
   PG_DATABASE: process.env.PG_DATABASE,
   PG_PORT: Number(process.env.PG_PORT),
   PG_PASSWORD: process.env.PG_PASSWORD,
-  JWT_SECRET: process.env.JWT_SECRET,
+  JWT_SECRET: process.env.JWT_SECRET || 'DevElopm3nt',
   PORT: 3000
 }
