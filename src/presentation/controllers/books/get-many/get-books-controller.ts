@@ -9,6 +9,7 @@ export class GetBooksController implements Controller {
       const result = await this.getBooks.get()
       return new Promise(resolve => resolve(ok(result)))
     } catch (err) {
+      console.error(err)
       return serverError()
     }
   }
