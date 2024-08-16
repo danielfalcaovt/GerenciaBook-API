@@ -50,4 +50,12 @@ describe('DbGetBooks', () => {
       makeFakeBook()
     ])
   })
+  it('Should throw if repository throws', async () => {
+    const { sut, dbGetBooksRepositoryStub } = makeSut()
+    jest.spyOn(dbGetBooksRepositoryStub, 'get').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const promise = sut.get()
+    expect(promise).rejects.toThrow()
+  })
 })
