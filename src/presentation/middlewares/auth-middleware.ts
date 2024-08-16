@@ -11,7 +11,10 @@ export class AuthMiddleware implements IMiddleware {
     if (!httpRequest.headers.authorization) {
       return forbidden(new AccessDeniedError())
     }
-    await this.tokenVerifier.verify(httpRequest.headers.authorization)
+    const result = await this.tokenVerifier.verify(httpRequest.headers.authorization)
+    if (!result) {
+      return forbidden(new AccessDeniedError())
+    }
     return new Promise(resolve => resolve(ok({})))
   }
 }
