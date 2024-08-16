@@ -16,11 +16,13 @@ const makeSut = (): SutTypes => {
   }
 }
 
+const fakeLendDay = new Date()
+
 const makeFakeBook = (): IBook => ({
   book_name: 'any_book',
   id: 'any_id',
   student_class: 3001,
-  lend_day: new Date(),
+  lend_day: fakeLendDay,
   student_name: 'any_name'
 })
 
