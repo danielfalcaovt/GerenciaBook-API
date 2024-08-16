@@ -15,6 +15,6 @@ export class AuthMiddleware implements IMiddleware {
     if (!result) {
       return forbidden(new AccessDeniedError())
     }
-    return new Promise(resolve => resolve(ok({})))
+    return new Promise(resolve => resolve(ok({ id: result })))
   }
 }
