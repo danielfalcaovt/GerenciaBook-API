@@ -33,9 +33,9 @@ describe('BooksRepository', () => {
   it('Should return an empty array if query fail', async () => {
     const sut = new BooksRepository()
     jest.spyOn(PgHelper, 'query').mockImplementationOnce(() => {
-      return new Promise(resolve => resolve({ rows: [] } as any))
+      return new Promise(resolve => resolve({ rows: [] } as any ))
     })
     const result = await sut.get()
     expect(result).toEqual([])
-  })
+  })  
 })

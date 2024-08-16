@@ -24,13 +24,15 @@ const makeFakeBook = (): IBook => ({
   student_name: 'any_name'
 })
 
+const expectedValue = [
+  makeFakeBook(),
+  makeFakeBook()
+]
+
 const makeDbGetBooksRepositoryStub = (): IDbGetBooksRepository => {
   class DbGetBooksRepositoryStub implements IDbGetBooksRepository {
     get(): Promise<IBook[]> {
-      return new Promise(resolve => resolve([
-        makeFakeBook(),
-        makeFakeBook()
-      ]))
+      return new Promise(resolve => resolve(expectedValue))
     }
   }
   return new DbGetBooksRepositoryStub()
@@ -46,10 +48,7 @@ describe('DbGetBooks', () => {
   it('Should return get result', async () => {
     const { sut } = makeSut()
     const result = await sut.get()
-    expect(result).toEqual([
-      makeFakeBook(),
-      makeFakeBook()
-    ])
+    expect(result).toEqual(expectedValue)
   })
   it('Should throw if repository throws', async () => {
     const { sut, dbGetBooksRepositoryStub } = makeSut()
