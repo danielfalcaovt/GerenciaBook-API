@@ -5,7 +5,7 @@ import { IDbGetBooksRepository } from "../../../protocols/db/books/idb-get-books
 export class DbGetBooks implements IGetBooks {
   constructor(private readonly DbGetBooksRepository: IDbGetBooksRepository) {}
   async get(): Promise<IBook[]> {
-    await this.DbGetBooksRepository.get()
-    return new Promise(resolve => resolve([]))
+    const result = await this.DbGetBooksRepository.get()
+    return new Promise(resolve => resolve(result))
   }
-}
+} 
