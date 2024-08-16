@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
 import { IBook } from '../../../../domain/protocols/book'
 import { PgHelper } from '../helpers/pg-helper'
 import { BooksRepository } from './books-repository'
@@ -39,5 +39,15 @@ describe('BooksRepository', () => {
     })
     const result = await sut.get()
     expect(result).toEqual([])
+  })
+  it('Should return the correct value when query succeed', async () => {
+    const sut = new BooksRepository()
+    const insertedBook = await PgHelper.query('INSERT INTO books(book_name, student_name, student_class, lend_day) VALUES($1, $2, $3, $4) RETURNING *', [makeFakeBook().book_name, makeFakeBook().student_name, makeFakeBook().student_class, makeFakeBook().lend_day])
+    await PgHelper.query('INSERT INTO books(book_name, student_name, student_class, lend_day) VALUES($1, $2, $3, $4)', [makeFakeBook().book_name, makeFakeBook().student_name, makeFakeBook().student_class, makeFakeBook().lend_day])
+    const response = await sut.get()
+    expect(response[0].id).toBeTruthy()
+    expect(response[0].book_name).toBe(insertedBook.rows[0].book_name)
+    expect(response[0].lend_day).toStrictEqual(insertedBook.rows[0].lend_day)
+    expect(response[0].student_name).toBe(insertedBook.rows[0].student_name)
   })
 })
