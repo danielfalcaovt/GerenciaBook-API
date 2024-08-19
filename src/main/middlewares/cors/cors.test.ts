@@ -2,6 +2,8 @@ import { Request, Response } from "express"
 import app from "../../config/app"
 import request from 'supertest'
 
+jest.mock("../auth-middleware/auth-middleware", () => jest.fn((req, res, next) => next()));
+
 describe('cors', () => {
   it('Should access-control-allow-origin be *', async () => {
     app.get('/test_cors', (req: Request, res: Response) => {
