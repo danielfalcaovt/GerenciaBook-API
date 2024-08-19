@@ -13,6 +13,6 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   if (result.statusCode === 200) {
     next()
   } else {
-    return res.status(result.statusCode).json(result.body)
+    return res.status(result.statusCode).json(result.body.message)
   }
 }

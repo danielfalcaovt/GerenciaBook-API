@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { AccessDeniedError } from "../errors"
-import { forbidden, ok, unauthorized } from "../helpers/http-helper"
+import { forbidden, ok, serverError, unauthorized } from "../helpers/http-helper"
 import { HttpRequest } from "../protocols/http"
 import { AuthMiddleware } from "./auth-middleware"
 import { ITokenVerifier } from "../../data/protocols/cryptography/itoken-verifier"
@@ -59,5 +59,13 @@ describe('Auth Middleware', () => {
     const { sut } = makeSut()
     const result = await sut.handle(makeFakeRequest())
     expect(result).toEqual(ok({ id: 'any_id' }))
+  })
+  it('Should return 500 if TokenVerifier throws', async () => {
+    const { sut, tokenVerifierStub } = makeSut()
+    jest.spyOn(tokenVerifierStub, 'verify').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const result = await sut.handle(makeFakeRequest())
+    expect(result).toEqual(serverError())
   })
 })
