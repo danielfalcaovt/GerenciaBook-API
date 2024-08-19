@@ -1,11 +1,10 @@
 import { IAddAccountRepository } from "../../../../data/protocols/db/users/iadd-account-repository";
 import { ILoadByEmail } from "../../../../data/protocols/db/users/iload-by-email";
-import { IUpdateAccessToken } from "../../../../data/protocols/db/users/iupdate-access-token";
 import { IAccount } from "../../../../domain/protocols/account";
 import { IAccountModel } from "../../../../domain/usecases/user-db/add-account";
 import { PgHelper } from "../helpers/pg-helper";
 
-export class PgAccountRepository implements IAddAccountRepository, ILoadByEmail, IUpdateAccessToken {
+export class PgAccountRepository implements IAddAccountRepository, ILoadByEmail {
   async add(account: IAccountModel): Promise<IAccount> {
     const insertedAccount = await PgHelper.query('INSERT INTO users(name, email, password) VALUES($1, $2, $3) RETURNING *', [account.name, account.email, account.password])
     if (insertedAccount.rows.length > 0) {
@@ -20,9 +19,5 @@ export class PgAccountRepository implements IAddAccountRepository, ILoadByEmail,
       return new Promise(resolve => resolve(foundAccount.rows[0]))
     }
     return new Promise(resolve => resolve(null))
-  }
-
-  async update(id: string, token: string): Promise<void> {
-    await PgHelper.query('UPDATE users SET token = $1 WHERE id = $2', [token, id])
   }
 }

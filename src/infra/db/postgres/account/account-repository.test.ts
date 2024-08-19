@@ -72,29 +72,4 @@ describe('PgAccountRepository', () => {
       expect(promise).rejects.toThrow()
     })
   })
-
-  describe('update access token', () => {
-    it('Should update the token on succeed', async () => {
-      const user = await PgHelper.query('INSERT INTO users(name, email, password) VALUES($1, $2, $3) RETURNING *', ['any_name', 'any_mail@mail.com', 'any_password'])
-      const sut = new PgAccountRepository()
-      await sut.update(user.rows[0].id, 'any_token')
-      const result = await PgHelper.query('SELECT * FROM users WHERE id = $1', [user.rows[0].id])
-      expect(result.rows[0].token).toBe('any_token')
-    })
-    it('Should call query with correct values', async () => {
-      const user = await PgHelper.query('INSERT INTO users(name, email, password) VALUES($1, $2, $3) RETURNING *', ['any_name', 'any_mail@mail.com', 'any_password'])
-      const sut = new PgAccountRepository()
-      const querySpy = jest.spyOn(PgHelper, 'query')
-      await sut.update(user.rows[0].id, 'any_token')
-      expect(querySpy).toHaveBeenCalledWith(expect.anything(), ['any_token', expect.anything()])
-    })
-    it('Should throw if query throws', async () => {
-      const sut = new PgAccountRepository()
-      jest.spyOn(PgHelper, 'query').mockImplementationOnce(() => {
-        throw new Error()
-      })
-      const promise = sut.update('anything', 'any_token')
-      expect(promise).rejects.toThrow()
-    })
-  })
 })

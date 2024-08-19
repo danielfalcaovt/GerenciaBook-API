@@ -11,8 +11,7 @@ export const makeLoginController = (): LoginController => {
   const jwtAdapter = new JwtAdapter(env.JWT_SECRET)
   const hashComparer = new BcryptAdapter(salt)
   const loadAccountByEmail = new PgAccountRepository()
-  const updateAccessToken = new PgAccountRepository()
-  const authentication = new DbAuthentication(updateAccessToken, loadAccountByEmail, jwtAdapter, hashComparer)
+  const authentication = new DbAuthentication(loadAccountByEmail, jwtAdapter, hashComparer)
   const loginController = new LoginController(makeLoginValidation(), authentication)
   return loginController
 }

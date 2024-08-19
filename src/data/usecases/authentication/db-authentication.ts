@@ -1,12 +1,10 @@
 import { AuthenticationModel, IAuthentication } from '../../../domain/usecases/user-db/authentication'
 import { IComparer } from '../../protocols/cryptography/icomparer'
 import { ITokenGenerator } from '../../protocols/cryptography/itoken-generator'
-import { IUpdateAccessToken } from '../../protocols/db/users/iupdate-access-token'
 import { ILoadByEmail } from '../../protocols/db/users/iload-by-email'
 
 export class DbAuthentication implements IAuthentication {
   constructor(
-    private readonly updateAccessTokenRepo: IUpdateAccessToken,
     private readonly loadAccountByEmail: ILoadByEmail,
     private readonly tokenGenerator: ITokenGenerator,
     private readonly hashComparer: IComparer
@@ -27,7 +25,6 @@ export class DbAuthentication implements IAuthentication {
     if (!accessToken) {
       return new Promise((resolve) => resolve(null))
     }
-    await this.updateAccessTokenRepo.update(account.id, accessToken)
     return new Promise((resolve) => resolve(accessToken))
   }
 }
