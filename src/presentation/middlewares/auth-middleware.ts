@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ITokenVerifier } from '../../data/protocols/cryptography/itoken-verifier'
 import { AccessDeniedError } from '../errors'
 import { forbidden, ok, serverError } from '../helpers/http-helper'
@@ -9,18 +10,19 @@ export class AuthMiddleware implements IMiddleware {
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      if (!httpRequest.headers.authorization) {
+      const { authorization } = httpRequest.headers
+      if (!authorization) {
         return forbidden(new AccessDeniedError())
       }
+      const token = authorization.replace('Bearer ', '')
       const result = await this.tokenVerifier.verify(
-        httpRequest.headers.authorization
+        token
       )
       if (!result) {
         return forbidden(new AccessDeniedError())
       }
       return new Promise((resolve) => resolve(ok({ id: result })))
     } catch (err) {
-      console.error(err)
       return serverError()
     }
   }
