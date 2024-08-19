@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { JwtAdapter } from "./jwt-adapter"
 import jwt from 'jsonwebtoken'
 
@@ -44,6 +45,12 @@ describe('JwtAdapter', () => {
       const verifySpy = jest.spyOn(jwt, 'verify')
       await sut.verify('any_token')
       expect(verifySpy).toHaveBeenCalledWith('any_token', expect.anything())
+    })
+    it('Should not return if verify fails', async () => {
+      const sut = makeSut()
+      jest.spyOn(jwt, 'verify').mockReturnValueOnce('any_error' as any)
+      const response = await sut.verify('any_token')
+      expect(response).toBeFalsy()
     })
   })
 })
