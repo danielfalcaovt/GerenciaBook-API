@@ -30,7 +30,7 @@ const makeTokenVerifierStub = (): ITokenVerifier => {
 
 const makeFakeRequest = (): HttpRequest => ({
   headers: {
-    authorization: 'any_token'
+    authorization: 'Bearer any_token'
   }
 })
 
