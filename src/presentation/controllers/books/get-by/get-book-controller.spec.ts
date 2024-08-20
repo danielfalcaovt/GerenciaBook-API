@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IBook } from '../../../../domain/protocols/book'
 import { IGetBook } from '../../../../domain/usecases/books/get/iget-by-books'
-import { HttpRequest, IValidation } from '../books-protocols'
+import { badRequest, HttpRequest, IValidation } from '../books-protocols'
 import { GetBookController } from './get-book-controller'
 
 interface SutTypes {
@@ -71,5 +71,12 @@ describe('GetBookController', () => {
     const validationSpy = jest.spyOn(validationStub, 'validate')
     await sut.handle(makeFakeRequest())
     expect(validationSpy).toHaveBeenCalledWith(makeFakeRequest().body)
+  })
+  it('Should return an error if validation fail', async () => {
+    const { sut, validationStub } = makeSut()
+    const expectedError = new Error('any_error')
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(expectedError)
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(badRequest(expectedError))
   })
 })
