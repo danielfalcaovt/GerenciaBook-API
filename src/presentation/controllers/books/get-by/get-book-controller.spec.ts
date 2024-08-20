@@ -87,4 +87,10 @@ describe('GetBookController', () => {
     const promise = sut.handle(makeFakeRequest())
     expect(promise).rejects.toThrow()
   })
+  it('Should call GetBook with correct values', async () => {
+    const { sut, getBooksStub } = makeSut()
+    const getSpy = jest.spyOn(getBooksStub, 'get')
+    await sut.handle(makeFakeRequest())
+    expect(getSpy).toHaveBeenCalledWith(makeFakeRequest().body)
+  })
 })
