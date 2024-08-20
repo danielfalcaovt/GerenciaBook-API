@@ -111,5 +111,13 @@ describe('BooksRepository', () => {
       expect(Number(response[0].student_class)).toBe(3001)
       expect(Number(response[0].lend_day)).toBe(fakeLendDay)
     })
+    it('Should throw if query throws', async () => {
+      const sut = new BooksRepository()
+      jest.spyOn(PgHelper, 'query').mockImplementationOnce(() => {
+        throw new Error()
+      })
+      const promise = sut.getBy(makeFakeRequest())
+      expect(promise).rejects.toThrow()
+    })
   })
 })
