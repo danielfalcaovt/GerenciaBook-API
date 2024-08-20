@@ -5,7 +5,7 @@ import { IDbGetByBook } from "../../../../protocols/db/books/idb-get-by-books";
 export class DbGetBook implements IGetBook {
   constructor(private readonly DbGetBy: IDbGetByBook) {}
   async get(book: IGetBookModel): Promise<IBook[]> {
-    await this.DbGetBy.getBy(book)
-    return new Promise(resolve => resolve([]))
+    const result = await this.DbGetBy.getBy(book)
+    return new Promise(resolve => resolve(result))
   }
 }
