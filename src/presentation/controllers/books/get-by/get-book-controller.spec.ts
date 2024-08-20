@@ -79,4 +79,12 @@ describe('GetBookController', () => {
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(badRequest(expectedError))
   })
+  it('Should throw if validation throws', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const promise = sut.handle(makeFakeRequest())
+    expect(promise).rejects.toThrow()
+  })
 })
