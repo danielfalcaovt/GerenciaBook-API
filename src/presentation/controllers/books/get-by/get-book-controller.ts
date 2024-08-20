@@ -9,7 +9,7 @@ export class GetBookController implements Controller {
     if (error) {
       return new Promise(resolve => resolve(badRequest(error)))
     }
-    await this.GetBook.get(httpRequest.body)
-    return new Promise(resolve => resolve(ok({})))
+    const result = await this.GetBook.get(httpRequest.body)
+    return new Promise(resolve => resolve(ok(result)))
   }
 }
