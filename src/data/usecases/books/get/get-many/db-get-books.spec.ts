@@ -1,5 +1,5 @@
-import { IBook } from '../../../../domain/protocols/book'
-import { IDbGetBooksRepository } from '../../../protocols/db/books/idb-get-books-repository'
+import { IBook } from '../../../../../domain/protocols/book'
+import { IDbGetBooksRepository } from '../../../../protocols/db/books/idb-get-books-repository'
 import { DbGetBooks } from './db-get-books'
 
 interface SutTypes {

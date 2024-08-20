@@ -1,4 +1,4 @@
-import { DbGetBooks } from "../../../../data/usecases/books/get/db-get-books";
+import { DbGetBooks } from "../../../../data/usecases/books/get/get-many/db-get-books";
 import { BooksRepository } from "../../../../infra/db/postgres/books/books-repository";
 import { GetBooksController } from "../../../../presentation/controllers/books/get-many/get-books-controller";
 

@@ -20,10 +20,10 @@ export class GetBookController implements Controller {
     try {
       const error = this.validation.validate(httpRequest.body)
       if (error) {
-        return new Promise((resolve) => resolve(badRequest(error)))
+        return new Promise(resolve => resolve(badRequest(error)))
       }
       const result = await this.GetBook.get(httpRequest.body)
-      return new Promise((resolve) => resolve(ok(result)))
+      return new Promise(resolve => resolve(ok(result)))
     } catch (err) {
       return serverError()
     }

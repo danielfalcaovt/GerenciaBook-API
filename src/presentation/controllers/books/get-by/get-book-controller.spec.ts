@@ -54,8 +54,6 @@ const makeGetBooksStub = (): IGetBook => {
   return new GetBooksStub()
 }
 
-const fakeDate = new Date()
-
 const makeFakeRequest = (): HttpRequest => ({
   body: {
     student_name: 'any_student',
