@@ -89,5 +89,10 @@ describe('BooksRepository', () => {
       await sut.getBy(makeFakeRequest())
       expect(querySpy).toHaveBeenCalledWith('SELECT * FROM books WHERE book_name = $1 AND student_name = $2', ['any_book', 'any_name'])
     })
+    it('Should return an empty array if query found nothing', async () => {
+      const sut = new BooksRepository()
+      const result = await sut.getBy(makeFakeRequest())
+      expect(result).toEqual([])
+    })
   })
 })
