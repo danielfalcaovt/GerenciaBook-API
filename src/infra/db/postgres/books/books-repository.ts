@@ -48,7 +48,11 @@ export class BooksRepository implements IDbBooksRepository, IDbGetByBook {
     }
 
 
-    await PgHelper.query(query, queryValues)
-    return new Promise(resolve => resolve([]))
+    const queryResult = await PgHelper.query(query, queryValues)
+    if (queryResult.rows.length === 0) {
+      return new Promise(resolve => resolve([]))
+    }
+
+    return new Promise(resolve => resolve(queryResult.rows))
   }
 }
