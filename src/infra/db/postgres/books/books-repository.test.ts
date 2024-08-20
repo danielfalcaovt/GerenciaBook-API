@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { IBook } from '../../../../domain/protocols/book'
+import { IGetBookModel } from '../../../../domain/usecases/books/get/iget-by-books'
 import { PgHelper } from '../helpers/pg-helper'
 import { BooksRepository } from './books-repository'
 
@@ -12,6 +13,11 @@ const makeFakeBook = (): IBook => ({
   lend_day: fakeLendDay,
   student_name: 'any_name',
   student_class: 3001
+})
+
+const makeFakeRequest = (): IGetBookModel => ({
+  student_name: 'any_name',
+  book_name: 'any_book'
 })
 
 describe('BooksRepository', () => {
@@ -74,6 +80,14 @@ describe('BooksRepository', () => {
       })
       const promise = sut.get()
       expect(promise).rejects.toThrow()
+    })
+  })
+  describe('getBy', () => {
+    it('Should call query with correct values', async () => {
+      const sut = new BooksRepository()
+      const querySpy = jest.spyOn(PgHelper, 'query')
+      await sut.getBy(makeFakeRequest())
+      expect(querySpy).toHaveBeenCalledWith('SELECT * FROM books WHERE book_name = $1 AND student_name = $2', ['any_book', 'any_name'])
     })
   })
 })
