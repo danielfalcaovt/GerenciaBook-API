@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IBook } from '../../../../domain/protocols/book'
 import { IGetBook } from '../../../../domain/usecases/books/get/iget-by-books'
-import { badRequest, HttpRequest, IValidation, ok } from '../books-protocols'
+import { badRequest, HttpRequest, IValidation, ok, serverError } from '../books-protocols'
 import { GetBookController } from './get-book-controller'
 
 interface SutTypes {
@@ -81,8 +81,8 @@ describe('GetBookController', () => {
     jest.spyOn(validationStub, 'validate').mockImplementationOnce(() => {
       throw new Error()
     })
-    const promise = sut.handle(makeFakeRequest())
-    expect(promise).rejects.toThrow()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(serverError())
   })
   it('Should call GetBook with correct values', async () => {
     const { sut, getBooksStub } = makeSut()
@@ -97,5 +97,13 @@ describe('GetBookController', () => {
       makeFakeBook(),
       makeFakeBook()
     ]))
+  })
+  it('Should return 500 if GetBook throws', async () => {
+    const { sut, getBooksStub } = makeSut()
+    jest.spyOn(getBooksStub, 'get').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(serverError())
   })
 })
