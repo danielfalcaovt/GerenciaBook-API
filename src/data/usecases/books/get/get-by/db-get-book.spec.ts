@@ -48,4 +48,9 @@ describe('DbGetBook', () => {
     await sut.get(makeFakeRequest())
     expect(getBySpy).toHaveBeenCalledWith(makeFakeRequest())
   })
+  it('Should return getBy result', async () => {
+    const { sut } = makeSut()
+    const response = await sut.get(makeFakeRequest())
+    expect(response).toEqual([makeFakeBook()])
+  })
 })
