@@ -18,11 +18,11 @@ export class GetBookController implements Controller {
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const error = this.validation.validate(httpRequest.body)
+      const error = this.validation.validate(httpRequest.params)
       if (error) {
         return new Promise(resolve => resolve(badRequest(error)))
       }
-      const result = await this.GetBook.get(httpRequest.body)
+      const result = await this.GetBook.get(httpRequest.params)
       return new Promise(resolve => resolve(ok(result)))
     } catch (err) {
       return serverError()

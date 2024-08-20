@@ -55,7 +55,7 @@ const makeGetBooksStub = (): IGetBook => {
 }
 
 const makeFakeRequest = (): HttpRequest => ({
-  body: {
+  params: {
     student_name: 'any_student',
   }
 })
@@ -65,7 +65,7 @@ describe('GetBookController', () => {
     const { sut, validationStub } = makeSut()
     const validationSpy = jest.spyOn(validationStub, 'validate')
     await sut.handle(makeFakeRequest())
-    expect(validationSpy).toHaveBeenCalledWith(makeFakeRequest().body)
+    expect(validationSpy).toHaveBeenCalledWith(makeFakeRequest().params)
   })
   it('Should return 500 if validation throws', async () => {
     const { sut, validationStub } = makeSut()
@@ -86,7 +86,7 @@ describe('GetBookController', () => {
     const { sut, getBooksStub } = makeSut()
     const getSpy = jest.spyOn(getBooksStub, 'get')
     await sut.handle(makeFakeRequest())
-    expect(getSpy).toHaveBeenCalledWith(makeFakeRequest().body)
+    expect(getSpy).toHaveBeenCalledWith(makeFakeRequest().params)
   })
   it('Should return the GetBook result', async () => {
     const { sut } = makeSut()
