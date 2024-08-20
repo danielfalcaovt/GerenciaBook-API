@@ -8,5 +8,5 @@ export interface IGetBookModel {
   book_name?: string
   student_name?: string
   student_class?: number
-  lend_day?: Date
+  lend_day?: number
 }

@@ -12,5 +12,5 @@ CREATE TABLE books (
   book_name varchar(100) NOT NULL,
   student_name varchar(100) NOT NULL,
   student_class varchar(4) NOT NULL,
-  lend_day DATE NOT NULL
+  lend_day BIGINT NOT NULL
 )

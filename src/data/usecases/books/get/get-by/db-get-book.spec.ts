@@ -18,7 +18,7 @@ const makeSut = (): SutTypes => {
   }
 }
 
-const fakeLendDay = new Date()
+const fakeLendDay = new Date().getTime()
 
 const makeFakeBook = (): IBook => ({
   book_name: 'any_book',
