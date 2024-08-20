@@ -5,7 +5,7 @@ import { IGetBookModel } from '../../../../domain/usecases/books/get/iget-by-boo
 import { PgHelper } from '../helpers/pg-helper'
 import { BooksRepository } from './books-repository'
 
-const fakeLendDay = new Date()
+const fakeLendDay = Number(new Date().getTime())
 
 const makeFakeBook = (): IBook => ({
   book_name: 'any_book',
@@ -70,7 +70,7 @@ describe('BooksRepository', () => {
       const response = await sut.get()
       expect(response[0].id).toBeTruthy()
       expect(response[0].book_name).toBe(insertedBook.rows[0].book_name)
-      expect(response[0].lend_day).toStrictEqual(insertedBook.rows[0].lend_day)
+      expect(Number(response[0].lend_day)).toBe(Number(insertedBook.rows[0].lend_day))
       expect(response[0].student_name).toBe(insertedBook.rows[0].student_name)
     })
     it('Should throw if query throws', async () => {
@@ -87,12 +87,29 @@ describe('BooksRepository', () => {
       const sut = new BooksRepository()
       const querySpy = jest.spyOn(PgHelper, 'query')
       await sut.getBy(makeFakeRequest())
-      expect(querySpy).toHaveBeenCalledWith('SELECT * FROM books WHERE book_name = $1 AND student_name = $2', ['any_book', 'any_name'])
+      expect(querySpy).toHaveBeenCalledWith(
+        'SELECT * FROM books WHERE book_name = $1 AND student_name = $2',
+        ['any_book', 'any_name']
+      )
     })
     it('Should return an empty array if query found nothing', async () => {
       const sut = new BooksRepository()
       const result = await sut.getBy(makeFakeRequest())
       expect(result).toEqual([])
+    })
+    it('Should return an book array if query found something', async () => {
+      await PgHelper.query(
+        'INSERT INTO books(book_name, student_name, student_class, lend_day) VALUES($1, $2, $3, $4)',
+        ['any_book', 'any_name', 3001, fakeLendDay]
+      )
+
+      const sut = new BooksRepository()
+      const response = await sut.getBy(makeFakeRequest())
+      expect(response[0].id).toBeTruthy()
+      expect(response[0].student_name).toBe('any_name')
+      expect(response[0].book_name).toBe('any_book')
+      expect(Number(response[0].student_class)).toBe(3001)
+      expect(Number(response[0].lend_day)).toBe(fakeLendDay)
     })
   })
 })
