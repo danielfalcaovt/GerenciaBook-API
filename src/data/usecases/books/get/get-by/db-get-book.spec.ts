@@ -53,4 +53,12 @@ describe('DbGetBook', () => {
     const response = await sut.get(makeFakeRequest())
     expect(response).toEqual([makeFakeBook()])
   })
+  it('Should throw if getBy throws', async () => {
+    const { sut, dbGetBooksRepositoryStub } = makeSut()
+    jest.spyOn(dbGetBooksRepositoryStub, 'getBy').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const promise = sut.get(makeFakeRequest())
+    expect(promise).rejects.toThrow()
+  })
 })
