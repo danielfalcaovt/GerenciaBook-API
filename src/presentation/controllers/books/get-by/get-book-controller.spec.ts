@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IBook } from '../../../../domain/protocols/book'
 import { IGetBook } from '../../../../domain/usecases/books/get/iget-by-books'
-import { badRequest, HttpRequest, IValidation } from '../books-protocols'
+import { badRequest, HttpRequest, IValidation, ok } from '../books-protocols'
 import { GetBookController } from './get-book-controller'
 
 interface SutTypes {
@@ -58,10 +58,7 @@ const fakeDate = new Date()
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
-    book_name: 'any_book',
     student_name: 'any_student',
-    student_class: 3001,
-    lend_day: fakeDate
   }
 })
 
@@ -92,5 +89,13 @@ describe('GetBookController', () => {
     const getSpy = jest.spyOn(getBooksStub, 'get')
     await sut.handle(makeFakeRequest())
     expect(getSpy).toHaveBeenCalledWith(makeFakeRequest().body)
+  })
+  it('Should return the GetBook result', async () => {
+    const { sut, getBooksStub } = makeSut()
+    const response = await sut.handle(makeFakeRequest())
+    expect(response).toEqual(ok([
+      makeFakeBook(),
+      makeFakeBook()
+    ]))
   })
 })
