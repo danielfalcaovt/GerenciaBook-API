@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { IGetBooks } from "../../../../domain/usecases/books/get/iget-books";
+import { IGetBooks } from "../../../../domain/usecases/books/get/iget-many-books";
 import { Controller, HttpRequest, HttpResponse, ok, serverError } from "../books-protocols";
 
 export class GetBooksController implements Controller {

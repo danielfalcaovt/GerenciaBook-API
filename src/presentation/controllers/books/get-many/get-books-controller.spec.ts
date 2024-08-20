@@ -1,5 +1,5 @@
 import { IBook } from '../../../../domain/protocols/book'
-import { IGetBooks } from '../../../../domain/usecases/books/get/iget-books'
+import { IGetBooks } from '../../../../domain/usecases/books/get/iget-many-books'
 import { serverError } from '../books-protocols'
 import { GetBooksController } from './get-books-controller'
 
