@@ -91,7 +91,7 @@ describe('GetBookController', () => {
     expect(getSpy).toHaveBeenCalledWith(makeFakeRequest().body)
   })
   it('Should return the GetBook result', async () => {
-    const { sut, getBooksStub } = makeSut()
+    const { sut } = makeSut()
     const response = await sut.handle(makeFakeRequest())
     expect(response).toEqual(ok([
       makeFakeBook(),
