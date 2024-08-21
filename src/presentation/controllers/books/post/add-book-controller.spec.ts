@@ -3,7 +3,7 @@
 
 import { IBook } from "../../../../domain/protocols/book"
 import { IAddBook, IAddBookModel } from "../../../../domain/usecases/books/post/iadd-book"
-import { badRequest, HttpRequest, IValidation, serverError } from "../books-protocols"
+import { badRequest, HttpRequest, IValidation, ok, serverError } from "../books-protocols"
 import { AddBookController } from "./add-book-controller"
 
 interface SutTypes {
@@ -92,5 +92,16 @@ describe('AddBook Controller', () => {
     })
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError())
+  })
+  it('Should return the inserted book on addBook succeed', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(ok({
+      book_name: 'any_name',
+      id: 'any_id',
+      lend_day: fakeLendDay,
+      student_class: 3001,
+      student_name: 'any_student'
+    }))
   })
 })
