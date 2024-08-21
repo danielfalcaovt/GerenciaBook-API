@@ -1,5 +1,5 @@
 import { IAddBook } from "../../../../domain/usecases/books/post/iadd-book";
-import { Controller, HttpRequest, HttpResponse, IValidation, ok } from "../books-protocols";
+import { badRequest, Controller, HttpRequest, HttpResponse, IValidation, ok } from "../books-protocols";
 
 export class AddBookController implements Controller {
   constructor(
@@ -7,7 +7,10 @@ export class AddBookController implements Controller {
     private readonly addBook: IAddBook
   ) {}
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-    this.validation.validate(httpRequest.body)
+    const error = this.validation.validate(httpRequest.body)
+    if (error) {
+      return new Promise(resolve => resolve(badRequest(error)))
+    }
     return new Promise(resolve => resolve(ok({})))
   }
 }
