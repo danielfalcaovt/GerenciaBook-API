@@ -79,4 +79,10 @@ describe('AddBook Controller', () => {
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError())
   })
+  it('Should call addBook with correct values', async () => {
+    const { sut, addBookStub } = makeSut()
+    const addSpy = jest.spyOn(addBookStub, 'add')
+    await sut.handle(makeFakeRequest())
+    expect(addSpy).toHaveBeenCalledWith(makeFakeRequest().body)
+  })
 })
