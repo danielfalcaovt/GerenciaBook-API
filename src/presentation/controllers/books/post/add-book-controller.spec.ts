@@ -3,7 +3,7 @@
 
 import { IBook } from "../../../../domain/protocols/book"
 import { IAddBook, IAddBookModel } from "../../../../domain/usecases/books/post/iadd-book"
-import { badRequest, HttpRequest, IValidation } from "../books-protocols"
+import { badRequest, HttpRequest, IValidation, serverError } from "../books-protocols"
 import { AddBookController } from "./add-book-controller"
 
 interface SutTypes {
@@ -70,5 +70,13 @@ describe('AddBook Controller', () => {
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error('any_error'))
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(badRequest(new Error('any_error')))
+  })
+  it('Should return 500 if validate throws', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(serverError())
   })
 })
