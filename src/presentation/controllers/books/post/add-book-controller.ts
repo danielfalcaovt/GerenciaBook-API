@@ -12,6 +12,7 @@ export class AddBookController implements Controller {
       if (error) {
         return new Promise(resolve => resolve(badRequest(error)))
       }
+      await this.addBook.add(httpRequest.body)
       return new Promise(resolve => resolve(ok({})))
     } catch (err) {
       console.log(err)
