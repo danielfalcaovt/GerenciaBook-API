@@ -11,7 +11,7 @@ export class DeleteBookController implements Controller {
     if (error) {
       return new Promise(resolve => resolve(badRequest(error)))
     }
-    await this.deleteBook.delete(httpRequest.body)
-    return new Promise(resolve => resolve(ok({})))
+    const affectedRows = await this.deleteBook.delete(httpRequest.body)
+    return new Promise(resolve => resolve(ok(affectedRows)))
   }
 }
