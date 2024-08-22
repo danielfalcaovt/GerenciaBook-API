@@ -40,4 +40,9 @@ describe('DbDeleteBook', () => {
     const promise = sut.delete('any_id')
     expect(promise).rejects.toThrow()
   })
+  it('Should return affected row on repository succeed', async () => {
+    const { sut } = makeSut()
+    const result = await sut.delete('any_id')
+    expect(result).toBe(1)
+  })
 })
