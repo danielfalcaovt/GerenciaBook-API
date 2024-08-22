@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { IDbAddBookRepository } from "../../../../data/protocols/db/books/idb-add-books-repository";
 import { IDbBooksRepository } from "../../../../data/protocols/db/books/idb-get-books-repository";
 import { IDbGetByBook } from "../../../../data/protocols/db/books/idb-get-by-books";
 import { IBook } from "../../../../domain/protocols/book";
 import { IGetBookModel } from "../../../../domain/usecases/books/get/iget-by-books";
+import { IAddBookModel } from "../../../../domain/usecases/books/post/idb-add-book";
 import { PgHelper } from "../helpers/pg-helper";
 
-export class BooksRepository implements IDbBooksRepository, IDbGetByBook {
+export class BooksRepository implements IDbBooksRepository, IDbGetByBook, IDbAddBookRepository {
   async get(): Promise<IBook[]> {
     const result = await PgHelper.query('SELECT * FROM books')
     if (result.rows.length > 0) {
@@ -54,5 +56,10 @@ export class BooksRepository implements IDbBooksRepository, IDbGetByBook {
     }
 
     return new Promise(resolve => resolve(queryResult.rows))
+  }
+
+  async add(book: IAddBookModel): Promise<IBook> {
+    await PgHelper.query('INSERT INTO books(book_name, student_name, lend_day, student_class) VALUES($1, $2, $3, $4)', [book.book_name, book.student_name, book.lend_day, book.student_class])
+    return new Promise(resolve => resolve({id: 'asidn', ...book}))
   }
 }
