@@ -47,4 +47,15 @@ describe('DbAddBook', () => {
     await sut.add(makeFakeRequest())
     expect(addSpyRep).toHaveBeenCalledWith(makeFakeRequest())
   })
+  it('Should return an book when post succeed', async () => {
+    const { sut } = makeSut()
+    const book = await sut.add(makeFakeRequest())
+    expect(book).toEqual({
+      book_name: 'any_book',
+      id: 'any_id',
+      lend_day: 1238128930128,
+      student_class: 3000,
+      student_name: 'any_name'
+    })
+  })
 })
