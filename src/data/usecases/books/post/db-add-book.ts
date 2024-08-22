@@ -7,10 +7,7 @@ export class DbAddBook implements IDbAddBook {
   constructor(private readonly dbAddBookRepository: IDbAddBookRepository) {}
 
   async add(book: IAddBookModel): Promise<IBook> {
-    await this.dbAddBookRepository.add(book)
-    return new Promise(resolve => resolve({
-      id: 'any_id',
-      ...book
-    }))
+    const insertedBook = await this.dbAddBookRepository.add(book)
+    return new Promise(resolve => resolve(insertedBook))
   }
 }
