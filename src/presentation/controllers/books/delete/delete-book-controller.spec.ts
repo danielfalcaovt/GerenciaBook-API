@@ -64,4 +64,12 @@ describe('DeleteBookController', () => {
     await sut.handle(makeFakeRequest())
     expect(deleteSpy).toHaveBeenCalledWith(makeFakeRequest().body)
   })
+  it('Should throw if DeleteBook throws', async () => {
+    const { sut, deleteBookStub } = makeSut()
+    jest.spyOn(deleteBookStub, 'delete').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const promise = sut.handle(makeFakeRequest())
+    expect(promise).rejects.toThrow()
+  })
 })
