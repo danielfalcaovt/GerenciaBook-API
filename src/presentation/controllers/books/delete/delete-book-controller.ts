@@ -1,9 +1,12 @@
-import { Controller, HttpRequest, HttpResponse, IValidation, ok } from "../books-protocols";
+import { badRequest, Controller, HttpRequest, HttpResponse, IValidation, ok } from "../books-protocols";
 
 export class DeleteBookController implements Controller {
   constructor(private readonly validation: IValidation) {}
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-    this.validation.validate(httpRequest.body)
+    const error = this.validation.validate(httpRequest.body)
+    if (error) {
+      return new Promise(resolve => resolve(badRequest(error)))
+    }
     return new Promise(resolve => resolve(ok({})))
   }
 }
