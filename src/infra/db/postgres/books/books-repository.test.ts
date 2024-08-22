@@ -2,6 +2,7 @@
 
 import { IBook } from '../../../../domain/protocols/book'
 import { IGetBookModel } from '../../../../domain/usecases/books/get/iget-by-books'
+import { IAddBookModel } from '../../../../domain/usecases/books/post/idb-add-book'
 import { PgHelper } from '../helpers/pg-helper'
 import { BooksRepository } from './books-repository'
 
@@ -13,11 +14,6 @@ const makeFakeBook = (): IBook => ({
   lend_day: fakeLendDay,
   student_name: 'any_name',
   student_class: 3001
-})
-
-const makeFakeRequest = (): IGetBookModel => ({
-  student_name: 'any_name',
-  book_name: 'any_book'
 })
 
 describe('BooksRepository', () => {
@@ -83,10 +79,14 @@ describe('BooksRepository', () => {
     })
   })
   describe('getBy', () => {
+    const makeFakeGetByRequest = (): IGetBookModel => ({
+      student_name: 'any_name',
+      book_name: 'any_book'
+    })
     it('Should call query with correct values', async () => {
       const sut = new BooksRepository()
       const querySpy = jest.spyOn(PgHelper, 'query')
-      await sut.getBy(makeFakeRequest())
+      await sut.getBy(makeFakeGetByRequest())
       expect(querySpy).toHaveBeenCalledWith(
         'SELECT * FROM books WHERE book_name = $1 AND student_name = $2',
         ['any_book', 'any_name']
@@ -94,7 +94,7 @@ describe('BooksRepository', () => {
     })
     it('Should return an empty array if query found nothing', async () => {
       const sut = new BooksRepository()
-      const result = await sut.getBy(makeFakeRequest())
+      const result = await sut.getBy(makeFakeGetByRequest())
       expect(result).toEqual([])
     })
     it('Should return an book array if query found something', async () => {
@@ -104,7 +104,7 @@ describe('BooksRepository', () => {
       )
 
       const sut = new BooksRepository()
-      const response = await sut.getBy(makeFakeRequest())
+      const response = await sut.getBy(makeFakeGetByRequest())
       expect(response[0].id).toBeTruthy()
       expect(response[0].student_name).toBe('any_name')
       expect(response[0].book_name).toBe('any_book')
@@ -116,8 +116,22 @@ describe('BooksRepository', () => {
       jest.spyOn(PgHelper, 'query').mockImplementationOnce(() => {
         throw new Error()
       })
-      const promise = sut.getBy(makeFakeRequest())
+      const promise = sut.getBy(makeFakeGetByRequest())
       expect(promise).rejects.toThrow()
+    })
+  })
+  describe('post', () => {
+    const makeFakePostRequest = (): IAddBookModel => ({
+      book_name: 'any_book',
+      lend_day: fakeLendDay,
+      student_name: 'any_name',
+      student_class: 3001
+    })
+    it('Should call query with correct values', async () => {
+      const sut = new BooksRepository()
+      const querySpy = jest.spyOn(PgHelper, 'query')
+      await sut.add(makeFakePostRequest())      
+      expect(querySpy).toHaveBeenCalledWith(expect.anything(), [makeFakePostRequest().book_name, makeFakePostRequest().student_name, makeFakePostRequest().lend_day, makeFakePostRequest().student_class])
     })
   })
 })
