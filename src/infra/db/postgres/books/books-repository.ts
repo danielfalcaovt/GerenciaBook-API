@@ -59,7 +59,11 @@ export class BooksRepository implements IDbBooksRepository, IDbGetByBook, IDbAdd
   }
 
   async add(book: IAddBookModel): Promise<IBook> {
-    await PgHelper.query('INSERT INTO books(book_name, student_name, lend_day, student_class) VALUES($1, $2, $3, $4)', [book.book_name, book.student_name, book.lend_day, book.student_class])
-    return new Promise(resolve => resolve({id: 'asidn', ...book}))
+    const insertedBook = await PgHelper.query('INSERT INTO books(book_name, student_name, lend_day, student_class) VALUES($1, $2, $3, $4) RETURNING *', [book.book_name, book.student_name, book.lend_day, book.student_class])
+    if (insertedBook.rows.length > 0) {
+      return new Promise(resolve => resolve(insertedBook.rows[0]))
+    } else {
+      throw new Error()
+    }
   }
 }
