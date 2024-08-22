@@ -40,7 +40,7 @@ const makeValidationStub = (): IValidation => {
 }
 
 const makeFakeRequest = (): HttpRequest => ({
-  body: {
+  query: {
     id: 'any_id'
   }
 })
@@ -50,7 +50,7 @@ describe('DeleteBookController', () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')
     await sut.handle(makeFakeRequest())
-    expect(validateSpy).toHaveBeenCalledWith(makeFakeRequest().body)
+    expect(validateSpy).toHaveBeenCalledWith(makeFakeRequest().query)
   })
   it('Should return 400 if validate fails', async () => {
     const { sut, validationStub } = makeSut()
@@ -62,7 +62,7 @@ describe('DeleteBookController', () => {
     const { sut, deleteBookStub } = makeSut()
     const deleteSpy = jest.spyOn(deleteBookStub, 'delete')
     await sut.handle(makeFakeRequest())
-    expect(deleteSpy).toHaveBeenCalledWith(makeFakeRequest().body)
+    expect(deleteSpy).toHaveBeenCalledWith(makeFakeRequest().query.id)
   })
   it('Should throw if DeleteBook throws', async () => {
     const { sut, deleteBookStub } = makeSut()

@@ -8,8 +8,7 @@ const salt = 12
 describe('LoginRoutes', () => {
   beforeAll(async () => {
     PgHelper.connect().then(() => {})
-    PgHelper.query('INSERT INTO users(name, email, password) VALUES($1, $2, $3)', ['any_name', 'any_email@mail.com', await hash('any_password', salt)])
-      .then(() => {})
+    PgHelper.query('INSERT INTO users(name, email, password) VALUES($1, $2, $3)', ['any_name', 'any_email@mail.com', await hash('any_password', salt)]).then(() => {})
   })
   
   afterAll(async () => {
