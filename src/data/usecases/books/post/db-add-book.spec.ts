@@ -58,4 +58,12 @@ describe('DbAddBook', () => {
       student_name: 'any_name'
     })
   })
+  it('Should throw if post throws', async () => {
+    const { sut, addBookRepositoryStub } = makeSut()
+    jest.spyOn(addBookRepositoryStub, 'add').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const promise = sut.add(makeFakeRequest())
+    expect(promise).rejects.toThrow()
+  })
 })
