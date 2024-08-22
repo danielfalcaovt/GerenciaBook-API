@@ -1,10 +1,10 @@
 import { IBook } from '../../../../../domain/protocols/book'
-import { IDbBooksRepository } from '../../../../protocols/db/books/idb-get-books-repository'
+import { IDbGetBookRepository } from '../../../../protocols/db/books/idb-get-books-repository'
 import { DbGetBooks } from './db-get-books'
 
 interface SutTypes {
   sut: DbGetBooks
-  dbGetBooksRepositoryStub: IDbBooksRepository
+  dbGetBooksRepositoryStub: IDbGetBookRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -31,8 +31,8 @@ const expectedValue = [
   makeFakeBook()
 ]
 
-const makeDbGetBooksRepositoryStub = (): IDbBooksRepository => {
-  class DbGetBooksRepositoryStub implements IDbBooksRepository {
+const makeDbGetBooksRepositoryStub = (): IDbGetBookRepository => {
+  class DbGetBooksRepositoryStub implements IDbGetBookRepository {
     get(): Promise<IBook[]> {
       return new Promise(resolve => resolve(expectedValue))
     }

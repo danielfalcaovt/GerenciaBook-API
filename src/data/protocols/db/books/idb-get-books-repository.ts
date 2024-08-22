@@ -1,5 +1,5 @@
 import { IBook } from '../../../../domain/protocols/book'
 
-export interface IDbBooksRepository {
+export interface IDbGetBookRepository {
   get(): Promise<IBook[]>
 }

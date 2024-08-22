@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IDbAddBookRepository } from "../../../../data/protocols/db/books/idb-add-books-repository";
-import { IDbBooksRepository } from "../../../../data/protocols/db/books/idb-get-books-repository";
+import { IDbGetBookRepository } from "../../../../data/protocols/db/books/idb-get-books-repository";
 import { IDbGetByBookRepository } from "../../../../data/protocols/db/books/idb-get-by-books";
 import { IBook } from "../../../../domain/protocols/book";
 import { IGetBookModel } from "../../../../domain/usecases/books/get/iget-by-books";
 import { IAddBookModel } from "../../../../domain/usecases/books/post/idb-add-book";
 import { PgHelper } from "../helpers/pg-helper";
 
-export class BooksRepository implements IDbBooksRepository, IDbGetByBookRepository, IDbAddBookRepository {
+export class BooksRepository implements IDbGetBookRepository, IDbGetByBookRepository, IDbAddBookRepository {
   async get(): Promise<IBook[]> {
     const result = await PgHelper.query('SELECT * FROM books')
     if (result.rows.length > 0) {
