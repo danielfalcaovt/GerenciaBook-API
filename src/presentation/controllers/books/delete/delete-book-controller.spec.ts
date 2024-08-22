@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { HttpRequest, IValidation } from "../books-protocols"
+import { badRequest, HttpRequest, IValidation } from "../books-protocols"
 import { DeleteBookController } from './delete-book-controller'
 
 interface SutTypes {
@@ -38,5 +38,11 @@ describe('DeleteBookController', () => {
     const validateSpy = jest.spyOn(validationStub, 'validate')
     await sut.handle(makeFakeRequest())
     expect(validateSpy).toHaveBeenCalledWith(makeFakeRequest().body)
+  })
+  it('Should return 400 if validate fails', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error('any_error'))
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(badRequest(new Error('any_error')))
   })
 })
