@@ -163,7 +163,6 @@ describe('BooksRepository', () => {
   })
   describe('delete', () => {
     it('Should call query with correct values', async () => {
-     /*  const insertedBook = await PgHelper.query('INSERT INTO books(book_name, student_name, student_class, lend_day) VALUES($1, $2, $3, $4) RETURNING *', ['any_name', 'any_book', 3000, new Date().getTime()]) */
       const sut = new BooksRepository()
       const querySpy = jest.spyOn(PgHelper, 'query')
       await sut.delete('cf6cee9a-a309-4823-a910-18c275920357')
@@ -176,6 +175,13 @@ describe('BooksRepository', () => {
       })
       const promise = sut.delete('any_id')
       expect(promise).rejects.toThrow()
+    })
+    it('Should return affected rows if query succeed', async () => {
+      PgHelper.query('INSERT INTO books(book_name, student_name, student_class, lend_day) VALUES($1, $2, $3, $4) RETURNING *', ['any_name', 'any_book', 3000, new Date().getTime()]).then(async insertedBook => {
+        const sut = new BooksRepository()
+        const rows = await sut.delete(insertedBook.rows[0].id)
+        expect(rows).toBe(1)
+      })
     })
   })
 })
