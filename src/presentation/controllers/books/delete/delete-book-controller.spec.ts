@@ -2,19 +2,32 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { badRequest, HttpRequest, IValidation } from "../books-protocols"
 import { DeleteBookController } from './delete-book-controller'
+import { IDbDeleteBook } from '../../../../domain/usecases/books/delete/idb-delete-book'
 
 interface SutTypes {
   sut: DeleteBookController
   validationStub: IValidation
+  deleteBookStub: IDbDeleteBook
 }
 
 const makeSut = (): SutTypes => {
+  const deleteBookStub = makeDeleteBookStub()
   const validationStub = makeValidationStub()
-  const sut = new DeleteBookController(validationStub)
+  const sut = new DeleteBookController(validationStub, deleteBookStub)
   return {
     sut,
-    validationStub
+    validationStub,
+    deleteBookStub
   }
+}
+
+const makeDeleteBookStub = (): IDbDeleteBook => {
+  class DbDeleteBookStub implements IDbDeleteBook {
+    delete(bookId: string): Promise<number> {
+      return new Promise(resolve => resolve(1))
+    }
+  }
+  return new DbDeleteBookStub()
 }
 
 const makeValidationStub = (): IValidation => {
@@ -44,5 +57,11 @@ describe('DeleteBookController', () => {
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error('any_error'))
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(badRequest(new Error('any_error')))
+  })
+  it('Should call DeleteBook with correct values', async () => {
+    const { sut, deleteBookStub } = makeSut()
+    const deleteSpy = jest.spyOn(deleteBookStub, 'delete')
+    await sut.handle(makeFakeRequest())
+    expect(deleteSpy).toHaveBeenCalledWith(makeFakeRequest().body)
   })
 })
