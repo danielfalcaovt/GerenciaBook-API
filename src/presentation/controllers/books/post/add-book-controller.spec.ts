@@ -2,14 +2,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { IBook } from "../../../../domain/protocols/book"
-import { IAddBook, IAddBookModel } from "../../../../domain/usecases/books/post/iadd-book"
+import { IDbAddBook, IAddBookModel } from "../../../../domain/usecases/books/post/idb-add-book"
 import { badRequest, HttpRequest, IValidation, ok, serverError } from "../books-protocols"
 import { AddBookController } from "./add-book-controller"
 
 interface SutTypes {
   sut: AddBookController
   validationStub: IValidation
-  addBookStub: IAddBook
+  addBookStub: IDbAddBook
 }
 
 const makeSut = (): SutTypes => {
@@ -25,8 +25,8 @@ const makeSut = (): SutTypes => {
 
 const fakeLendDay = new Date().getTime()
 
-const makeAddBookStub = (): IAddBook => {
-  class AddBookStub implements IAddBook {
+const makeAddBookStub = (): IDbAddBook => {
+  class AddBookStub implements IDbAddBook {
     add(book: IAddBookModel): Promise<IBook> {
       return new Promise(resolve => resolve({
         book_name: 'any_name',

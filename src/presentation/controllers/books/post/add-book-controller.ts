@@ -1,10 +1,10 @@
-import { IAddBook } from "../../../../domain/usecases/books/post/iadd-book";
+import { IDbAddBook } from "../../../../domain/usecases/books/post/idb-add-book";
 import { badRequest, Controller, HttpRequest, HttpResponse, IValidation, ok, serverError } from "../books-protocols";
 
 export class AddBookController implements Controller {
   constructor(
     private readonly validation: IValidation,
-    private readonly addBook: IAddBook
+    private readonly addBook: IDbAddBook
   ) {}
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
