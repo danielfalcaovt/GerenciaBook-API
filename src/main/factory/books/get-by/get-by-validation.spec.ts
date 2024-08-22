@@ -3,7 +3,7 @@ import { IValidation } from '../../login/login-protocols'
 import { ValidationComposite } from '../../login/login-protocols'
 import { makeGetByValidation } from './get-by-validations'
 
-jest.mock('../../login/login-protocols')
+jest.mock('../../../../presentation/helpers/validations')
 
 describe('GetBy Validations', () => {
   it('Should call ValidationComposite with correct values', async () => {

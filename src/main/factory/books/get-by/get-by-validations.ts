@@ -1,5 +1,5 @@
 import { RequiredAtLeastOneIn } from "../../../../presentation/helpers/validations/required-at-least-one-in";
-import { IValidation, ValidationComposite } from "../../login/login-protocols";
+import { IValidation, ValidationComposite } from "./get-by-protocols";
 
 export const makeGetByValidation = (): IValidation => {
   const validations: IValidation[] = []
