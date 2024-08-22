@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { IBook } from '../../../../../domain/protocols/book'
 import { IGetBookModel } from '../../../../../domain/usecases/books/get/iget-by-books'
-import { IDbGetByBook } from '../../../../../data/protocols/db/books/idb-get-by-books'
+import { IDbGetByBookRepository } from '../../../../../data/protocols/db/books/idb-get-by-books'
 import { DbGetBook } from './db-get-book'
 
 interface SutTypes {
   sut: DbGetBook
-  dbGetBooksRepositoryStub: IDbGetByBook
+  dbGetBooksRepositoryStub: IDbGetByBookRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -32,8 +32,8 @@ const makeFakeRequest = (): IGetBookModel => ({
   book_name: 'any_book'
 })
 
-const makeDbBooksRepositoryStub = (): IDbGetByBook => {
-  class DbGetBooksRepositoryStub implements IDbGetByBook {
+const makeDbBooksRepositoryStub = (): IDbGetByBookRepository => {
+  class DbGetBooksRepositoryStub implements IDbGetByBookRepository {
     getBy(data: IGetBookModel): Promise<IBook[]> {
       return new Promise((resolve) => resolve([makeFakeBook()]))
     }
