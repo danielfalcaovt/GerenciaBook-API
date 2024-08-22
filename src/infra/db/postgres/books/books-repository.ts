@@ -69,7 +69,11 @@ export class BooksRepository implements IDbGetBookRepository, IDbGetByBookReposi
   }
 
   async delete(bookId: string): Promise<number> {
-    await PgHelper.query('DELETE FROM books WHERE id = $1', [bookId])
-    return Promise.resolve(1)
+    const queryResult = await PgHelper.query('DELETE FROM books WHERE id = $1', [bookId])
+    if (queryResult.rows.length > 0) {
+      return new Promise(resolve => resolve(queryResult.rows.length))
+    } else {
+      return new Promise(resolve => resolve(0))
+    }
   }
 }
