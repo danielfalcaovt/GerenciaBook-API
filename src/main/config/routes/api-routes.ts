@@ -16,5 +16,11 @@ export default async (app: Express) => {
     }
   })
 
+  fs.readdirSync(`${__dirname}/../../routes/books/delete`).map(async file => {
+    if (!file.includes('.test') && !file.includes('.map')) {
+      (await import(`../../routes/books/delete/${file}`)).default(router)
+    }
+  })
+
   app.use('/api', router)
 }

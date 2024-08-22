@@ -7,11 +7,11 @@ export class DeleteBookController implements Controller {
     private readonly deleteBook: IDbDeleteBook
   ) {}
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-    const error = this.validation.validate(httpRequest.body)
+    const error = this.validation.validate(httpRequest.query)
     if (error) {
       return new Promise(resolve => resolve(badRequest(error)))
     }
-    const affectedRows = await this.deleteBook.delete(httpRequest.body)
+    const affectedRows = await this.deleteBook.delete(httpRequest.query.id)
     return new Promise(resolve => resolve(ok(affectedRows)))
   }
 }
