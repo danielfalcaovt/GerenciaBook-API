@@ -169,5 +169,13 @@ describe('BooksRepository', () => {
       await sut.delete('cf6cee9a-a309-4823-a910-18c275920357')
       expect(querySpy).toHaveBeenCalledWith(expect.anything(), ['cf6cee9a-a309-4823-a910-18c275920357'])
     })
+    it('Should throw if query throws', async () => {
+      const sut = new BooksRepository()
+      jest.spyOn(PgHelper, 'query').mockImplementationOnce(() => {
+        throw new Error()
+      })
+      const promise = sut.delete('any_id')
+      expect(promise).rejects.toThrow()
+    })
   })
 })
