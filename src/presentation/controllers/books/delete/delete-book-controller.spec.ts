@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { badRequest, HttpRequest, IValidation } from "../books-protocols"
+import { badRequest, HttpRequest, IValidation, ok } from "../books-protocols"
 import { DeleteBookController } from './delete-book-controller'
 import { IDbDeleteBook } from '../../../../domain/usecases/books/delete/idb-delete-book'
 
@@ -71,5 +71,10 @@ describe('DeleteBookController', () => {
     })
     const promise = sut.handle(makeFakeRequest())
     expect(promise).rejects.toThrow()
+  })
+  it('Should return affected rows on succeed', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(ok(1))
   })
 })
