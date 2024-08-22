@@ -150,5 +150,15 @@ describe('BooksRepository', () => {
       const promise = sut.add(makeFakePostRequest())
       expect(promise).rejects.toThrow()
     })
+    it('Should throw if query returns nothing', async () => {
+      const sut = new BooksRepository()
+      jest.spyOn(PgHelper, 'query').mockImplementationOnce((): any => {
+        return {
+          rows: []
+        }
+      })
+      const promise = sut.add(makeFakePostRequest())
+      expect(promise).rejects.toThrow()
+    })
   })
 })
