@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IDbAddBookRepository } from "../../../../data/protocols/db/books/idb-add-books-repository";
+import { IDbDeleteBookRepository } from "../../../../data/protocols/db/books/idb-delete-books-repository";
 import { IDbGetBookRepository } from "../../../../data/protocols/db/books/idb-get-books-repository";
 import { IDbGetByBookRepository } from "../../../../data/protocols/db/books/idb-get-by-books";
 import { IBook } from "../../../../domain/protocols/book";
@@ -7,7 +8,7 @@ import { IGetBookModel } from "../../../../domain/usecases/books/get/iget-by-boo
 import { IAddBookModel } from "../../../../domain/usecases/books/post/idb-add-book";
 import { PgHelper } from "../helpers/pg-helper";
 
-export class BooksRepository implements IDbGetBookRepository, IDbGetByBookRepository, IDbAddBookRepository {
+export class BooksRepository implements IDbGetBookRepository, IDbGetByBookRepository, IDbAddBookRepository, IDbDeleteBookRepository {
   async get(): Promise<IBook[]> {
     const result = await PgHelper.query('SELECT * FROM books')
     if (result.rows.length > 0) {
@@ -65,5 +66,10 @@ export class BooksRepository implements IDbGetBookRepository, IDbGetByBookReposi
     } else {
       throw new Error()
     }
+  }
+
+  async delete(bookId: string): Promise<number> {
+    await PgHelper.query('DELETE FROM books WHERE id = $1', [bookId])
+    return Promise.resolve(1)
   }
 }
