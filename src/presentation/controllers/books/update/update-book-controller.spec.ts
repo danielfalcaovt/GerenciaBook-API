@@ -67,7 +67,7 @@ describe('UpdateBookController', () => {
     await sut.handle(makeFakeRequest())
     expect(validationSpy).toHaveBeenCalledWith(makeFakeRequest().body)
   })
-  it.skip('Should return 500 if validation throws', async () => {
+  it('Should an error if validation fails', async () => {
     const { sut, validationStub } = makeSut()
     const expectedError = new Error('any_error')
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(expectedError)
