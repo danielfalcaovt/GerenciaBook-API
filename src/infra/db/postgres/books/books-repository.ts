@@ -110,10 +110,13 @@ export class BooksRepository implements IDbGetBookRepository, IDbGetByBookReposi
       queryParams++
     }
     
-    query += ` WHERE id = $${queryParams}`
+    query += ` WHERE id = $${queryParams} RETURNING *`
     queryValues.push(book.id)
-    console.log(query)
-    await PgHelper.query(query, queryValues)
-    return Promise.resolve([])
+    const result = await PgHelper.query(query, queryValues)
+    if(result.rows.length > 0) {
+      return new Promise(resolve => resolve(result.rows))
+    } else {
+      return new Promise(resolve => resolve([]))
+    }
   }
 }
