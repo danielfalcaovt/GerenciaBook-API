@@ -4,23 +4,13 @@ import fs from 'fs'
 export default async (app: Express) => {
   const router = Router()
 
-  fs.readdirSync(`${__dirname}/../../routes/books/get`).map(async file => {
-    if (!file.includes('.test') && !file.includes('.map')) {
-      (await import(`../../routes/books/get/${file}`)).default(router)
-    }
-  })
-
-  fs.readdirSync(`${__dirname}/../../routes/books/post`).map(async file => {
-    if (!file.includes('.test') && !file.includes('.map')) {
-      (await import(`../../routes/books/post/${file}`)).default(router)
-    }
-  })
-
-  fs.readdirSync(`${__dirname}/../../routes/books/delete`).map(async file => {
-    if (!file.includes('.test') && !file.includes('.map')) {
-      (await import(`../../routes/books/delete/${file}`)).default(router)
-    }
-  })
+  for (const route of ['get', 'post', 'delete', 'update']) {
+    fs.readdirSync(`${__dirname}/../../routes/books/${route}`).map(async file => {
+      if (!file.includes('.test') && !file.includes('.map')) {
+        (await import(`../../routes/books/${route}/${file}`)).default(router)
+      }
+    })
+  }
 
   app.use('/api', router)
 }
