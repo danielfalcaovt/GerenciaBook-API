@@ -63,4 +63,12 @@ describe('DbUpdateBook', () => {
       }
     ])
   })
+  it('Should throw if update throws', async () => {
+    const { sut, updateBookRepository } = makeSut()
+    jest.spyOn(updateBookRepository, 'update').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const promise = sut.update(makeFakeRequest())
+    expect(promise).rejects.toThrow()
+  })
 })
