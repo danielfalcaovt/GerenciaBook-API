@@ -82,7 +82,7 @@ describe('UpdateBookController', () => {
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError())
   })
-  it.skip('Should call UpdateBook with correct values', async () => {
+  it('Should call UpdateBook with correct values', async () => {
     const { sut, updateBooksStub } = makeSut()
     const updateSpy = jest.spyOn(updateBooksStub, 'update')
     await sut.handle(makeFakeRequest())
