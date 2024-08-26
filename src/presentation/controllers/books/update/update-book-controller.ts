@@ -13,6 +13,7 @@ export class UpdateBookController implements Controller {
       if(error) {
         return new Promise(resolve => resolve(badRequest(error)))
       }
+      await this.updateBook.update(httpRequest.body)
       return new Promise(resolve => resolve(ok([])))
     } catch (err) {
       console.log(err)
