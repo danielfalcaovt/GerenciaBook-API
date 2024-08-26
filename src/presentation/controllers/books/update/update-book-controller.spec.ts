@@ -95,7 +95,7 @@ describe('UpdateBookController', () => {
       makeFakeBook()
     ]))
   })
-  it.skip('Should return 500 if UpdateBook throws', async () => {
+  it('Should return 500 if UpdateBook throws', async () => {
     const { sut, updateBooksStub } = makeSut()
     jest.spyOn(updateBooksStub, 'update').mockImplementationOnce(() => {
       throw new Error()
