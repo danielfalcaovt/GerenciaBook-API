@@ -53,4 +53,14 @@ describe('DbUpdateBook', () => {
     await sut.update(makeFakeRequest())
     expect(updateSpy).toHaveBeenCalledWith(makeFakeRequest())
   })
+  it('Should return update result on succeed', async () => {
+    const { sut } = makeSut()
+    const result = await sut.update(makeFakeRequest())
+    expect(result).toEqual([
+      {
+        ...makeFakeBook(),
+        ...makeFakeRequest()
+      }
+    ])
+  })
 })
