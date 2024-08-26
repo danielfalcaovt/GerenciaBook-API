@@ -3,6 +3,7 @@
 import { IBook } from '../../../../domain/protocols/book'
 import { IGetBookModel } from '../../../../domain/usecases/books/get/iget-by-books'
 import { IAddBookModel } from '../../../../domain/usecases/books/post/idb-add-book'
+import { IUpdateBookModel } from '../../../../domain/usecases/books/update/iupdate-by-books'
 import { PgHelper } from '../helpers/pg-helper'
 import { BooksRepository } from './books-repository'
 
@@ -182,6 +183,18 @@ describe('BooksRepository', () => {
         const rows = await sut.delete(insertedBook.rows[0].id)
         expect(rows).toBe(1)
       })
+    })
+  })
+  describe('update', () => {
+    const makeFakeUpdateRequest = (): IUpdateBookModel => ({
+      id: 'cf6cee9a-a309-4823-a910-18c275920357',
+      student_class: 3001
+    })
+    it('Should call query with correct values', async () => {
+      const sut = new BooksRepository()
+      const querySpy = jest.spyOn(PgHelper, 'query')
+      await sut.update(makeFakeUpdateRequest())
+      expect(querySpy).toHaveBeenCalledWith('UPDATE books SET student_class = $1 WHERE id = $2', [3001, 'cf6cee9a-a309-4823-a910-18c275920357'])
     })
   })
 })
