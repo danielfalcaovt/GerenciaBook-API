@@ -5,7 +5,7 @@ import { IUpdateBookRepository } from "../../../protocols/db/books/idb-update-bo
 export class DbUpdateBook implements IUpdateBook {
   constructor(private readonly updateBookRepository: IUpdateBookRepository) {}
   async update(book: IUpdateBookModel): Promise<IBook[]> {
-    await this.updateBookRepository.update(book)
-    return new Promise(resolve => resolve([]))
+    const result = await this.updateBookRepository.update(book)
+    return new Promise(resolve => resolve(result))
   }
 }
