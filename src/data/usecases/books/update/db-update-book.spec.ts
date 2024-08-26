@@ -1,11 +1,11 @@
 import { IBook } from "../../../../domain/protocols/book"
 import { IUpdateBook, IUpdateBookModel } from "../../../../domain/usecases/books/update/iupdate-by-books"
-import { IUpdateBookRepository } from '../../../protocols/db/books/idb-update-books-repository'
+import { IDbUpdateBookRepository } from '../../../protocols/db/books/idb-update-books-repository'
 import { DbUpdateBook } from './db-update-book'
 
 interface SutTypes {
   sut: IUpdateBook
-  updateBookRepository: IUpdateBookRepository
+  updateBookRepository: IDbUpdateBookRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -32,8 +32,8 @@ const makeFakeBook = (): IBook => ({
 
 const fakeLendDay = new Date().getTime()
 
-const makeUpdateRepository = (): IUpdateBookRepository => {
-  class UpdateBookRepositoryStub implements IUpdateBookRepository {
+const makeUpdateRepository = (): IDbUpdateBookRepository => {
+  class UpdateBookRepositoryStub implements IDbUpdateBookRepository {
     update(book: IUpdateBookModel): Promise<IBook[]> {
       return new Promise(resolve => resolve([
         {
