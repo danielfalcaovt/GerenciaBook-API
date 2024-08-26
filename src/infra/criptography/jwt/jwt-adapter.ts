@@ -12,11 +12,16 @@ export class JwtAdapter implements ITokenGenerator, ITokenVerifier {
   }
 
   async verify(token: string): Promise<string | null> {
-    const result = jwt.verify(token, this.JWT_SECRET)
-    if (result instanceof Error || typeof result === 'string') {
+    try {
+      const result = jwt.verify(token, this.JWT_SECRET)
+      if (typeof result !== 'string') {
+        return new Promise(resolve => resolve(result.id))
+      } else {
+        return new Promise(resolve => resolve(null))
+      }
+    } catch (err) {
+      console.log(err)
       return new Promise(resolve => resolve(null))
-    } else {
-      return new Promise(resolve => resolve(result.id))
     }
   }
 }

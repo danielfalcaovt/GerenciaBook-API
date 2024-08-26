@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
 import { ITokenVerifier } from '../../data/protocols/cryptography/itoken-verifier'
 import { AccessDeniedError } from '../errors'
 import { forbidden, ok, serverError } from '../helpers/http-helper'
@@ -23,6 +23,7 @@ export class AuthMiddleware implements IMiddleware {
       }
       return new Promise((resolve) => resolve(ok({ id: result })))
     } catch (err) {
+      console.log(err)
       return serverError()
     }
   }
