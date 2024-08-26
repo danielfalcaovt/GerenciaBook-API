@@ -194,7 +194,18 @@ describe('BooksRepository', () => {
       const sut = new BooksRepository()
       const querySpy = jest.spyOn(PgHelper, 'query')
       await sut.update(makeFakeUpdateRequest())
-      expect(querySpy).toHaveBeenCalledWith('UPDATE books SET student_class = $1 WHERE id = $2', [3001, 'cf6cee9a-a309-4823-a910-18c275920357'])
+      expect(querySpy).toHaveBeenCalledWith('UPDATE books SET student_class = $1 WHERE id = $2 RETURNING *', [3001, 'cf6cee9a-a309-4823-a910-18c275920357'])
+    })
+    it('Should return update result on succeed', async () => {
+      const insertedBook = await PgHelper.query(
+        'INSERT INTO books(book_name, student_name, student_class, lend_day) VALUES($1, $2, $3, $4) RETURNING *',
+        ['any_book', 'any_name', 3001, fakeLendDay]
+      )
+      const sut = new BooksRepository()
+      const result = await sut.update({ id: insertedBook?.rows[0].id, student_name: 'other_name' })
+      expect(result[0]?.id).toBeTruthy()
+      expect(result[0]?.student_name).toBe('other_name')
+      expect(result[0]?.book_name).toBe('any_book')
     })
   })
 })
