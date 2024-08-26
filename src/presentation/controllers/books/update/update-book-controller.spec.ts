@@ -88,11 +88,10 @@ describe('UpdateBookController', () => {
     await sut.handle(makeFakeRequest())
     expect(updateSpy).toHaveBeenCalledWith(makeFakeRequest().body)
   })
-  it.skip('Should return the UpdateBook result', async () => {
+  it('Should return the UpdateBook result', async () => {
     const { sut } = makeSut()
     const response = await sut.handle(makeFakeRequest())
     expect(response).toEqual(ok([
-      makeFakeBook(),
       makeFakeBook()
     ]))
   })
