@@ -11,12 +11,12 @@ export const badRequest = (error: Error): HttpResponse => ({
 
 export const serverError = (): HttpResponse => ({
   statusCode: 500,
-  body: new ServerError()
+  body: new ServerError().message
 })
 
 export const unauthorized = (): HttpResponse => ({
   statusCode: 401,
-  body: new Unauthorized()
+  body: new Unauthorized().message
 })
 
 export const forbidden = (error: Error): HttpResponse => ({
