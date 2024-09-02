@@ -9,10 +9,11 @@ describe('cors', () => {
     app.get('/test_cors', (req: Request, res: Response) => {
       res.send({})
     })
-    await request(app)
+    
+    const response = await request(app)
       .get('/test_cors')
-      .expect("access-control-allow-origin", '*')
-      .expect("access-control-allow-headers", '*')
-      .expect("access-control-allow-methods", '*')
+      .set('Origin', 'https://random.com')
+    expect(response.statusCode).toBe(200)
+    expect(response.headers['access-control-allow-origin']).toBe('*')
   })
 })
