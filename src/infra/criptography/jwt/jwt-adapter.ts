@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
  
  
 import { ITokenGenerator } from '../../../data/protocols/cryptography/itoken-generator'
@@ -20,7 +21,6 @@ export class JwtAdapter implements ITokenGenerator, ITokenVerifier {
         return new Promise(resolve => resolve(null))
       }
     } catch (err) {
-      console.log(err)
       return new Promise(resolve => resolve(null))
     }
   }
