@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { IDbAddBook } from "../../../../domain/usecases/books/post/idb-add-book";
 import { badRequest, Controller, HttpRequest, HttpResponse, IValidation, ok, serverError } from "../books-protocols";
 
@@ -15,7 +16,6 @@ export class AddBookController implements Controller {
       const book = await this.addBook.add(httpRequest.body)
       return new Promise(resolve => resolve(ok(book)))
     } catch (err) {
-      console.log(err)
       return new Promise(resolve => resolve(serverError()))
     }
   }

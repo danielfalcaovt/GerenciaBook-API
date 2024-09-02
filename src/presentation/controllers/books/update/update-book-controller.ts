@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
  
 import { IUpdateBook } from "../../../../domain/usecases/books/update/iupdate-by-books";
 import { badRequest, Controller, HttpRequest, HttpResponse, IValidation, ok, serverError } from "../books-protocols";
@@ -16,7 +17,6 @@ export class UpdateBookController implements Controller {
       const result = await this.updateBook.update(httpRequest.body)
       return new Promise(resolve => resolve(ok(result)))
     } catch (err) {
-      console.log(err)
       return serverError()
     }
   }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
  
 import { IGetBook } from '../../../../domain/usecases/books/get/iget-by-books'
 import {
@@ -25,7 +26,6 @@ export class GetBookController implements Controller {
       const result = await this.GetBook.get(httpRequest.query)
       return new Promise(resolve => resolve(ok(result)))
     } catch (err) {
-      console.log(err)
       return serverError()
     }
   }
