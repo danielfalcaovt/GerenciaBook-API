@@ -89,8 +89,8 @@ describe('BooksRepository', () => {
       const querySpy = jest.spyOn(PgHelper, 'query')
       await sut.getBy(makeFakeGetByRequest())
       expect(querySpy).toHaveBeenCalledWith(
-        'SELECT * FROM books WHERE book_name = $1 AND student_name = $2',
-        ['any_book', 'any_name']
+        'SELECT * FROM books WHERE LOWER(book_name) LIKE LOWER($1) AND LOWER(student_name) LIKE LOWER($2)',
+        ['%any_book%', '%any_name%']
       )
     })
     it('Should return an empty array if query found nothing', async () => {
