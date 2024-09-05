@@ -26,15 +26,15 @@ export class BooksRepository implements IDbGetBookRepository, IDbGetByBookReposi
     const queryValues: any[] = []
     let queryParams = 1
     if (data.book_name) {
-      queryValues.push(data.book_name)
-      query += ` book_name = $${queryParams}`
+      queryValues.push('%'+data.book_name+'%')
+      query += ` LOWER(book_name) LIKE LOWER($${queryParams})`
       queryParams++
     }
 
     if (data.student_name) {
-      queryValues.push(data.student_name)
+      queryValues.push('%'+data.student_name+'%')
       query += queryParams > 1 ? ' AND' : ''
-      query += ` student_name = $${queryParams}`
+      query += ` LOWER(student_name) LIKE LOWER($${queryParams})`
       queryParams++
     }
 
@@ -51,7 +51,6 @@ export class BooksRepository implements IDbGetBookRepository, IDbGetByBookReposi
       query += ` lend_day = $${queryParams}`
       queryParams++
     }
-
 
     const queryResult = await PgHelper.query(query, queryValues)
     if (queryResult.rows.length === 0) {
@@ -112,6 +111,8 @@ export class BooksRepository implements IDbGetBookRepository, IDbGetByBookReposi
     
     query += ` WHERE id = $${queryParams} RETURNING *`
     queryValues.push(book.id)
+    console.log(query)
+    console.log(queryValues)
     const result = await PgHelper.query(query, queryValues)
     if(result.rows.length > 0) {
       return new Promise(resolve => resolve(result.rows))
