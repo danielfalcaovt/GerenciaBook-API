@@ -14,3 +14,9 @@ CREATE TABLE books (
   student_class varchar(4) NOT NULL,
   lend_day BIGINT NOT NULL
 )
+
+CREATE TABLE admins (
+	id uuid default gen_random_uuid() PRIMARY KEY,
+	email varchar(100) NOT NULL,
+	password varchar(100) NOT NULL	
+)
