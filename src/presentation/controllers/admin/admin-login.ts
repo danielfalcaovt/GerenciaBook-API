@@ -14,6 +14,7 @@ export class AdminLoginController implements Controller {
       }
       const user = httpRequest.body
       const token = await this.authentication.auth(user)
+      console.log(token)
       if (!token) {
         return new Promise(resolve => resolve(unauthorized()))
       }
