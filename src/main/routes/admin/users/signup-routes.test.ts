@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import request from 'supertest'
-import app from '../../config/app'
-import { PgHelper } from '../../../infra/db/postgres/helpers/pg-helper'
+import app from '../../../config/app'
+import { PgHelper } from '../../../../infra/db/postgres/helpers/pg-helper'
 import { NextFunction } from 'express'
 
-jest.mock('../../middlewares/auth-middleware/auth-middleware', () =>
+jest.mock('../../../middlewares/auth-middleware/auth-middleware', () =>
   jest.fn((req: any, res: any, next: NextFunction) => next())
 )
 
