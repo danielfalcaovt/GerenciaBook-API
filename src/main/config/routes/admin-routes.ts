@@ -3,12 +3,11 @@ import fs from 'fs'
 
 export default async (app: Express) => {
   const router = Router()
-
-  fs.readdirSync(`${__dirname}/../../routes/login`).map(async file => {
+  fs.readdirSync(`${__dirname}/../../routes/admin`).map(async file => {
     if (!file.includes('.test') && !file.includes('.map')) {
-      (await import(`../../routes/login/${file}`)).default(router)
+      (await import(`../../routes/admin/${file}`)).default(router)
     }
   })
 
-  app.use('/api', router)
+  app.use('/admin', router)
 }

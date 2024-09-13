@@ -4,7 +4,7 @@ import { JwtAdapter } from "../../../infra/criptography/jwt/jwt-adapter";
 import env from "../../config/env";
 
 export default async (req: Request, res: Response, next: NextFunction) => {
-  const tokenVerifier = new JwtAdapter(env.JWT_SECRET)
+  const tokenVerifier = new JwtAdapter(req.url.includes('admin') ? env.JWT_ADM_SECRET : env.JWT_SECRET)
   const authMiddleware = new AuthMiddleware(tokenVerifier)
   const httpRequest = {
     headers: req.headers

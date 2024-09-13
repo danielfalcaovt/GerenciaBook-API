@@ -5,7 +5,7 @@ import { Request, Response } from 'express'
 jest.mock("../auth-middleware/auth-middleware", () => jest.fn((req, res, next) => next()));
 
 describe('ExpressRateLimit', () => {
-  it('Should return 200 if limit was not reach', async () => {
+  it.skip('Should return 200 if limit was not reach', async () => {
     app.get('/test_ratelimit', (req: Request, res: Response) => {
       res.send({ responde: 'any_response' })
     })

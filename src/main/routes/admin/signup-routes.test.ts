@@ -1,6 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import request from 'supertest'
 import app from '../../config/app'
 import { PgHelper } from '../../../infra/db/postgres/helpers/pg-helper'
+import { NextFunction } from 'express'
+
+jest.mock('../../middlewares/auth-middleware/auth-middleware', () =>
+  jest.fn((req: any, res: any, next: NextFunction) => next())
+)
 
 describe('SignUp Routes', () => {
   beforeAll(async () => {
@@ -25,7 +31,7 @@ describe('SignUp Routes', () => {
 
   it('Should return an account on call signup route', async () => {
     await request(app)
-      .post('/api/signup')
+      .post('/admin/signup')
       .send({
         name: 'any_name',
         email: 'any_email@mail.com',
