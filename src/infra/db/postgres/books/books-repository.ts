@@ -111,8 +111,6 @@ export class BooksRepository implements IDbGetBookRepository, IDbGetByBookReposi
     
     query += ` WHERE id = $${queryParams} RETURNING *`
     queryValues.push(book.id)
-    console.log(query)
-    console.log(queryValues)
     const result = await PgHelper.query(query, queryValues)
     if(result.rows.length > 0) {
       return new Promise(resolve => resolve(result.rows))
