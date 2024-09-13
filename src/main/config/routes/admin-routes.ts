@@ -3,9 +3,9 @@ import fs from 'fs'
 
 export default async (app: Express) => {
   const router = Router()
-  fs.readdirSync(`${__dirname}/../../routes/admin`).map(async file => {
+  fs.readdirSync(`${__dirname}/../../routes/admin/users`).map(async file => {
     if (!file.includes('.test') && !file.includes('.map')) {
-      (await import(`../../routes/admin/${file}`)).default(router)
+      (await import(`../../routes/admin/users/${file}`)).default(router)
     }
   })
 
