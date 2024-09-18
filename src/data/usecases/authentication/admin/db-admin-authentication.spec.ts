@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IAccount } from '../../../domain/protocols/account'
-import { IComparer } from '../../protocols/cryptography/icomparer'
-import { ITokenGenerator } from '../../protocols/cryptography/itoken-generator'
-import { ILoadByEmail } from '../../protocols/db/users/iload-by-email'
-import { DbAuthentication } from './db-authentication'
+import { IAccount } from '../../../../domain/protocols/account'
+import { IComparer } from '../../../protocols/cryptography/icomparer'
+import { Encrypter } from '../../../protocols/cryptography/encrypter'
+import { ILoadByEmail } from '../../../protocols/db/users/iload-by-email'
+import { DbAdminAuthentication } from './db-admin-authentication'
 
 interface SutTypes {
-  sut: DbAuthentication
+  sut: DbAdminAuthentication
   loadAccountStub: ILoadByEmail
-  tokenGeneratorStub: ITokenGenerator
+  tokenGeneratorStub: Encrypter
   hashComparerStub: IComparer
 }
 
@@ -17,7 +17,7 @@ const makeSut = (): SutTypes => {
   const loadAccountStub = makeLoadAccountByEmail()
   const tokenGeneratorStub = makeTokenGeneratorStub()
   const hashComparerStub = makeHashComparer()
-  const sut = new DbAuthentication(
+  const sut = new DbAdminAuthentication(
     loadAccountStub,
     tokenGeneratorStub,
     hashComparerStub
@@ -58,8 +58,8 @@ const makeHashComparer = (): IComparer => {
 }
 
 const makeTokenGeneratorStub = (): any => {
-  class tokenGeneratorStub implements ITokenGenerator {
-    generate(id: string): Promise<string> {
+  class tokenGeneratorStub implements Encrypter {
+    encrypt(id: string): Promise<string> {
       return new Promise((resolve) => resolve('any_token'))
     }
   }
@@ -74,7 +74,7 @@ const makeFakeAccount = () => {
   }
 }
 
-describe('DbAuthentication Usecase', () => {
+describe('DbAdminAuthentication Usecase', () => {
   it('Should call LoadAccountByEmail with correct values', async () => {
     const { sut, loadAccountStub } = makeSut()
     const loadAccountSpy = jest.spyOn(loadAccountStub, 'load')
@@ -125,13 +125,13 @@ describe('DbAuthentication Usecase', () => {
   })
   it('Should call TokenGenerator with correct id', async () => {
     const { sut, tokenGeneratorStub } = makeSut()
-    const tokenSpy = jest.spyOn(tokenGeneratorStub, 'generate')
+    const tokenSpy = jest.spyOn(tokenGeneratorStub, 'encrypt')
     await sut.auth(makeFakeAccount())
     expect(tokenSpy).toHaveBeenCalledWith('any_id')
   })
   it('Should throw if TokenGenerator throws', async () => {
     const { sut, tokenGeneratorStub } = makeSut()
-    jest.spyOn(tokenGeneratorStub, 'generate').mockReturnValueOnce(
+    jest.spyOn(tokenGeneratorStub, 'encrypt').mockReturnValueOnce(
       new Promise((resolve, reject) => {
         reject(new Error())
       })

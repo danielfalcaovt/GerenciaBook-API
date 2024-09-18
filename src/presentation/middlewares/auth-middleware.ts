@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
  
-import { ITokenVerifier } from '../../data/protocols/cryptography/itoken-verifier'
+import { Decrypter } from '../../data/protocols/cryptography/decrypter'
 import { AccessDeniedError } from '../errors'
 import { forbidden, ok, serverError } from '../helpers/http-helper'
 import { HttpRequest, HttpResponse } from '../protocols/http'
 import { IMiddleware } from '../protocols/middleware'
 
 export class AuthMiddleware implements IMiddleware {
-  constructor(private readonly tokenVerifier: ITokenVerifier) {}
+  constructor(private readonly decrypter: Decrypter) {}
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
@@ -16,7 +16,7 @@ export class AuthMiddleware implements IMiddleware {
         return Promise.resolve(forbidden(new AccessDeniedError()))
       }
       const token = authorization.replace('Bearer ', '')
-      const result = await this.tokenVerifier.verify(
+      const result = await this.decrypter.decrypt(
         token
       )
       if (!result) {

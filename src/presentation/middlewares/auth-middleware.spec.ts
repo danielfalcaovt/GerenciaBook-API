@@ -3,29 +3,29 @@ import { AccessDeniedError } from "../errors"
 import { forbidden, ok, serverError, unauthorized } from "../helpers/http-helper"
 import { HttpRequest } from "../protocols/http"
 import { AuthMiddleware } from "./auth-middleware"
-import { ITokenVerifier } from "../../data/protocols/cryptography/itoken-verifier"
+import { Decrypter } from "../../data/protocols/cryptography/decrypter"
 
 interface SutTypes {
   sut: AuthMiddleware
-  tokenVerifierStub: ITokenVerifier
+  decrypterStub: Decrypter
 }
 
 const makeSut = (): SutTypes => {
-  const tokenVerifierStub = makeTokenVerifierStub()
-  const sut = new AuthMiddleware(tokenVerifierStub)
+  const decrypterStub = makeDecrypterStub()
+  const sut = new AuthMiddleware(decrypterStub)
   return {
     sut,
-    tokenVerifierStub
+    decrypterStub
   }
 }
 
-const makeTokenVerifierStub = (): ITokenVerifier => {
-  class TokenVerifierStub implements ITokenVerifier {
-    verify(token: string): Promise<string | null> {
+const makeDecrypterStub = (): Decrypter => {
+  class DecrypterStub implements Decrypter {
+    decrypt(token: string): Promise<string | null> {
       return new Promise(resolve => resolve('any_id'))
     }
   }
-  return new TokenVerifierStub()
+  return new DecrypterStub()
 }
 
 const makeFakeRequest = (): HttpRequest => ({
@@ -43,26 +43,26 @@ describe('Auth Middleware', () => {
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
   })
-  it('Should call TokenVerifier with correct value', async () => {
-    const { sut, tokenVerifierStub } = makeSut()
-    const verifierSpy = jest.spyOn(tokenVerifierStub, 'verify')
+  it('Should call Decrypter with correct value', async () => {
+    const { sut, decrypterStub } = makeSut()
+    const verifierSpy = jest.spyOn(decrypterStub, 'decrypt')
     await sut.handle(makeFakeRequest())
     expect(verifierSpy).toHaveBeenCalledWith('any_token')
   })
-  it('Should return 403 if TokenVerifier fail', async () => {
-    const { sut, tokenVerifierStub } = makeSut()
-    jest.spyOn(tokenVerifierStub, 'verify').mockReturnValueOnce(new Promise(resolve => resolve(null)))
+  it('Should return 403 if Decrypter fail', async () => {
+    const { sut, decrypterStub } = makeSut()
+    jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(new Promise(resolve => resolve(null)))
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
   })
-  it('Should return id on TokenVerifier succeed', async () => {
+  it('Should return id on Decrypter succeed', async () => {
     const { sut } = makeSut()
     const result = await sut.handle(makeFakeRequest())
     expect(result).toEqual(ok({ id: 'any_id' }))
   })
-  it('Should return 500 if TokenVerifier throws', async () => {
-    const { sut, tokenVerifierStub } = makeSut()
-    jest.spyOn(tokenVerifierStub, 'verify').mockImplementationOnce(() => {
+  it('Should return 500 if Decrypter throws', async () => {
+    const { sut, decrypterStub } = makeSut()
+    jest.spyOn(decrypterStub, 'decrypt').mockImplementationOnce(() => {
       throw new Error()
     })
     const result = await sut.handle(makeFakeRequest())

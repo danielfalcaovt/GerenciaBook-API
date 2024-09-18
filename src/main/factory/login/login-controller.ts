@@ -1,4 +1,4 @@
-import { DbAuthentication } from "../../../data/usecases/authentication/db-authentication"
+import { DbAuthentication } from "../../../data/usecases/authentication/user/db-authentication"
 import { BcryptAdapter } from "../../../infra/criptography/bcrypt/bcrypt-adapter"
 import { PgAccountRepository } from "../../../infra/db/postgres/account/account-repository"
 import { LoginController } from "../../../presentation/controllers/login/login"
