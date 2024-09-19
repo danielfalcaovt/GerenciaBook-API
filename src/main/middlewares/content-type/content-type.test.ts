@@ -2,8 +2,6 @@ import { Request, Response } from "express"
 import app from "../../config/app"
 import request from 'supertest'
 
-jest.mock("../auth-middleware/auth-middleware", () => jest.fn((req, res, next) => next()));
-
 describe('ContentType', () => {
   it('Should default be json', async () => {
     app.get('/test_contenttype', (req: Request, res: Response) => {

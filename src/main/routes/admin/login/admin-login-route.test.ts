@@ -17,7 +17,7 @@ describe('AdminLoginRoute', () => {
   
   it('Should return 200 on succeed', async () => {
     await request(app)
-      .post('/api/adm-login')
+      .post('/admin/login')
       .send({
         email: 'any_mail@mail.com',
         password: 'any_password'

@@ -4,6 +4,7 @@ import fs from 'fs'
 export default async (app: Express) => {
   const router = Router()
 
+  // rotas crud da tabela de livros
   for (const route of ['get', 'post', 'delete', 'update']) {
     fs.readdirSync(`${__dirname}/../../routes/books/${route}`).map(async file => {
       if (!file.includes('.test') && !file.includes('.map')) {

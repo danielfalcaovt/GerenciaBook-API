@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import request from 'supertest'
 import app from '../../../config/app'
-import { NextFunction } from 'express'
 import { PgHelper } from '../../../../infra/db/postgres/helpers/pg-helper'
-
-jest.mock('../../../middlewares/auth-middleware/auth-middleware', () => jest.fn((req: any, res: any, next: NextFunction) => next()))
+import { sign } from 'jsonwebtoken'
+import env from '../../../config/env'
 
 describe('GetBy Route', () => {
   beforeAll(async () => {
@@ -20,8 +19,10 @@ describe('GetBy Route', () => {
   })
 
   it('Should return 200 on succeed', async () => {
+    const mockedJwt = sign({ id: 'random_id' }, env.JWT_SECRET)
     await request(app)
       .get('/api/books/query?student_name=any_name')
+      .set('Authorization', 'Bearer ' + mockedJwt)
       .expect(200)
   })
 })

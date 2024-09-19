@@ -1,8 +1,8 @@
 import request from 'supertest'
 import app from '../../../config/app'
 import { PgHelper } from '../../../../infra/db/postgres/helpers/pg-helper'
-
-jest.mock('../../../middlewares/auth-middleware/auth-middleware', () => jest.fn((req, res, next) => next()));
+import { sign } from 'jsonwebtoken'
+import env from '../../../config/env'
 
 describe('GetMany Routes', () => {
   beforeAll(async () => {
@@ -14,8 +14,10 @@ describe('GetMany Routes', () => {
   })
 
   it('Should return 200 on call get many route', async () => {
+    const mockedJwt = sign({ id: 'random_id' }, env.JWT_SECRET)
     await request(app)
       .get('/api/books')
+      .set('Authorization', 'Bearer ' + mockedJwt)
       .expect(200)
   })
 })
