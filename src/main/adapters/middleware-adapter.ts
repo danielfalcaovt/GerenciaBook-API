@@ -5,7 +5,6 @@ export default (middleware: IMiddleware) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     // interceptação dos usuários que não estão autênticados
     const response = await middleware.handle(req)
-    console.log(req.headers)
     if (response.statusCode === 200) {
       next()
     } else {
