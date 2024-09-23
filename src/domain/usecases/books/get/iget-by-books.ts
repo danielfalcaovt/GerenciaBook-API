@@ -7,6 +7,7 @@ export interface IGetBook {
 export interface IGetBookModel {
   book_name?: string
   student_name?: string
-  student_class?: number
-  lend_day?: number
+  student_class?: string
+  lend_day?: string
+  phone?: string
 }

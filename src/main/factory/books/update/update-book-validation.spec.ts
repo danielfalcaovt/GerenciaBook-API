@@ -13,7 +13,8 @@ describe('updateBook Validations', () => {
       'book_name',
       'student_name',
       'student_class',
-      'lend_day'
+      'lend_day',
+      'phone'
     ]
     validations.push(new RequiredAtLeastOneIn(params))
     expect(ValidationComposite).toHaveBeenCalledWith(validations)

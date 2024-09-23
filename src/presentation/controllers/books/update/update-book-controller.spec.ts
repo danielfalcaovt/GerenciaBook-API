@@ -31,14 +31,15 @@ const makeValidationStub = (): IValidation => {
   return new ValidationStub()
 }
 
-const fakeLendDay = new Date().getTime()
+const fakeLendDay = String(new Date().getTime())
 
 const makeFakeBook = (): IBook => ({
   book_name: 'any_book',
   id: 'any_id',
   lend_day: fakeLendDay,
   student_name: 'any_name',
-  student_class: 3001
+  student_class: "3001",
+  phone: '00000000000'
 })
 
 

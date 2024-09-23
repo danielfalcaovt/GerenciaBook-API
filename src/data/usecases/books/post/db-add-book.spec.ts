@@ -24,9 +24,10 @@ const makeAddBookRepositoryStub = (): IDbAddBookRepository => {
       return new Promise(resolve => resolve({
         book_name: 'any_book',
         id: 'any_id',
-        lend_day: 1238128930128,
-        student_class: 3000,
-        student_name: 'any_name'
+        lend_day: "1238128930128",
+        student_class: "3000",
+        student_name: 'any_name',
+        phone: '00000000000'
       }))
     }
   }
@@ -35,8 +36,8 @@ const makeAddBookRepositoryStub = (): IDbAddBookRepository => {
 
 const makeFakeRequest = (): IAddBookModel => ({
   book_name: 'any_book',
-  lend_day: 1238128930128,
-  student_class: 3000,
+  lend_day: "1238128930128",
+  student_class: "3000",
   student_name: 'any_name'
 })
 
@@ -53,9 +54,10 @@ describe('DbAddBook', () => {
     expect(book).toEqual({
       book_name: 'any_book',
       id: 'any_id',
-      lend_day: 1238128930128,
-      student_class: 3000,
-      student_name: 'any_name'
+      lend_day: "1238128930128",
+      student_class: "3000",
+      student_name: 'any_name',
+      phone: '00000000000'
     })
   })
   it('Should throw if post throws', async () => {

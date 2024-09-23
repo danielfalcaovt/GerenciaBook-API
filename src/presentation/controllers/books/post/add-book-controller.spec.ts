@@ -1,10 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { IBook } from "../../../../domain/protocols/book"
-import { IDbAddBook, IAddBookModel } from "../../../../domain/usecases/books/post/idb-add-book"
-import { badRequest, HttpRequest, IValidation, ok, serverError } from "../books-protocols"
-import { AddBookController } from "./add-book-controller"
+import { IBook } from '../../../../domain/protocols/book'
+import {
+  IDbAddBook,
+  IAddBookModel
+} from '../../../../domain/usecases/books/post/idb-add-book'
+import {
+  badRequest,
+  HttpRequest,
+  IValidation,
+  ok,
+  serverError
+} from '../books-protocols'
+import { AddBookController } from './add-book-controller'
 
 interface SutTypes {
   sut: AddBookController
@@ -23,18 +32,21 @@ const makeSut = (): SutTypes => {
   }
 }
 
-const fakeLendDay = new Date().getTime()
+const fakeLendDay = String(new Date().getTime())
 
 const makeAddBookStub = (): IDbAddBook => {
   class AddBookStub implements IDbAddBook {
     add(book: IAddBookModel): Promise<IBook> {
-      return new Promise(resolve => resolve({
-        book_name: 'any_name',
-        id: 'any_id',
-        lend_day: fakeLendDay,
-        student_class: 3001,
-        student_name: 'any_student'
-      }))
+      return new Promise((resolve) =>
+        resolve({
+          book_name: 'any_name',
+          id: 'any_id',
+          lend_day: fakeLendDay,
+          student_class: '3001',
+          student_name: 'any_student',
+          phone: null
+        })
+      )
     }
   }
   return new AddBookStub()
@@ -67,7 +79,9 @@ describe('AddBook Controller', () => {
   })
   it('Should return 400 if validate fails', async () => {
     const { sut, validationStub } = makeSut()
-    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error('any_error'))
+    jest
+      .spyOn(validationStub, 'validate')
+      .mockReturnValueOnce(new Error('any_error'))
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(badRequest(new Error('any_error')))
   })
@@ -96,12 +110,15 @@ describe('AddBook Controller', () => {
   it('Should return the inserted book on addBook succeed', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(makeFakeRequest())
-    expect(httpResponse).toEqual(ok({
-      book_name: 'any_name',
-      id: 'any_id',
-      lend_day: fakeLendDay,
-      student_class: 3001,
-      student_name: 'any_student'
-    }))
+    expect(httpResponse).toEqual(
+      ok({
+        book_name: 'any_name',
+        id: 'any_id',
+        lend_day: fakeLendDay,
+        student_class: '3001',
+        student_name: 'any_student',
+        phone: null
+      })
+    )
   })
 })

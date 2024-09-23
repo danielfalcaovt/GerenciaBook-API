@@ -2,7 +2,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IBook } from '../../../../domain/protocols/book'
 import { IGetBook } from '../../../../domain/usecases/books/get/iget-by-books'
-import { badRequest, HttpRequest, IValidation, ok, serverError } from '../books-protocols'
+import {
+  badRequest,
+  HttpRequest,
+  IValidation,
+  ok,
+  serverError
+} from '../books-protocols'
 import { GetBookController } from './get-book-controller'
 
 interface SutTypes {
@@ -31,24 +37,21 @@ const makeValidationStub = (): IValidation => {
   return new ValidationStub()
 }
 
-const fakeLendDay = new Date().getTime()
+const fakeLendDay = String(new Date().getTime())
 
 const makeFakeBook = (): IBook => ({
   book_name: 'any_book',
   id: 'any_id',
   lend_day: fakeLendDay,
   student_name: 'any_name',
-  student_class: 3001
+  student_class: '3001',
+  phone: '00000000000'
 })
-
 
 const makeGetBooksStub = (): IGetBook => {
   class GetBooksStub implements IGetBook {
     get(): Promise<IBook[]> {
-      return new Promise(resolve => resolve([
-        makeFakeBook(),
-        makeFakeBook()
-      ]))
+      return new Promise((resolve) => resolve([makeFakeBook(), makeFakeBook()]))
     }
   }
   return new GetBooksStub()
@@ -56,7 +59,7 @@ const makeGetBooksStub = (): IGetBook => {
 
 const makeFakeRequest = (): HttpRequest => ({
   query: {
-    student_name: 'any_student',
+    student_name: 'any_student'
   }
 })
 
@@ -91,10 +94,7 @@ describe('GetBookController', () => {
   it('Should return the GetBook result', async () => {
     const { sut } = makeSut()
     const response = await sut.handle(makeFakeRequest())
-    expect(response).toEqual(ok([
-      makeFakeBook(),
-      makeFakeBook()
-    ]))
+    expect(response).toEqual(ok([makeFakeBook(), makeFakeBook()]))
   })
   it('Should return 500 if GetBook throws', async () => {
     const { sut, getBooksStub } = makeSut()
