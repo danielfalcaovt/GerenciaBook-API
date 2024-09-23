@@ -1,3 +1,6 @@
-echo "Inicialização do servidor iniciada..."
+echo "Inicialização do banco de dados em andamento..."
 docker rm -f gerenciabook
-(npm run up && echo "Inicializado.")|| echo "Erro na inicialização"
+docker start my-postgres
+docker start my-pgadmin
+npm run up
+echo "GerenciaBook Inicializado."

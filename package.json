@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon ./dist/main/server.js",
     "debug": "nodemon -L --watch --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
-    "up": "npm run build && docker-compose up",
+    "up": "npm run build && docker-compose up -d",
     "down": "docker-compose down",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand --forceExit",
     "test:int": "npm run test -- -c ./jest-integration-config.js",
