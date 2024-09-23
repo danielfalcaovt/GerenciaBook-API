@@ -52,6 +52,13 @@ export class BooksRepository implements IDbGetBookRepository, IDbGetByBookReposi
       queryParams++
     }
 
+    if (data.phone) {
+      queryValues.push(data.phone)
+      query += queryParams > 1 ? ' AND' : ''
+      query += ` phone = $${queryParams}`
+      queryParams++
+    }
+
     const queryResult = await PgHelper.query(query, queryValues)
     if (queryResult.rows.length === 0) {
       return new Promise(resolve => resolve([]))
@@ -61,7 +68,7 @@ export class BooksRepository implements IDbGetBookRepository, IDbGetByBookReposi
   }
 
   async add(book: IAddBookModel): Promise<IBook> {
-    const insertedBook = await PgHelper.query('INSERT INTO books(book_name, student_name, lend_day, student_class) VALUES($1, $2, $3, $4) RETURNING *', [book.book_name, book.student_name, book.lend_day, book.student_class])
+    const insertedBook = await PgHelper.query('INSERT INTO books(book_name, student_name, lend_day, student_class, phone) VALUES($1, $2, $3, $4, $5) RETURNING *', [book.book_name, book.student_name, book.lend_day, book.student_class, book.phone || null])
     if (insertedBook.rows.length > 0) {
       return new Promise(resolve => resolve(insertedBook.rows[0]))
     } else {
@@ -106,6 +113,13 @@ export class BooksRepository implements IDbGetBookRepository, IDbGetByBookReposi
       queryValues.push(book.lend_day)
       query += queryParams > 1 ? ', ' : ''
       query += ` lend_day = $${queryParams}`
+      queryParams++
+    }
+
+    if (book.phone) {
+      queryValues.push(book.phone)
+      query += queryParams > 1 ? ', ' : ''
+      query += ` phone = $${queryParams}`
       queryParams++
     }
     
