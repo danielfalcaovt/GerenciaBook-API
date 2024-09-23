@@ -13,6 +13,7 @@ CREATE TABLE books (
   student_name varchar(100) NOT NULL,
   student_class varchar(4) NOT NULL,
   lend_day BIGINT NOT NULL
+  phone varchar(11)
 )
 
 CREATE TABLE admins (
