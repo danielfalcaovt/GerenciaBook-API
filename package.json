@@ -9,6 +9,7 @@
     "down": "docker-compose down",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand --forceExit",
     "test:int": "npm run test -- -c ./jest-integration-config.js",
+    "test:unit": "npm run test -- -c ./jest-unit-config.js",
     "test:verbose": "jest --passWithNoTests --forceExit",
     "build": "rimraf ./dist && tsc",
     "test:staged": "npm test -- --findRelatedTests ./src"
