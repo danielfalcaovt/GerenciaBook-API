@@ -2,7 +2,7 @@ name: 'Continuous Integration'
 on: push
 jobs:
   continuous-integration:
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Node.JS
