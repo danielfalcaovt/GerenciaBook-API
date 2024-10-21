@@ -49,6 +49,12 @@ describe('DbGetBook', () => {
     await sut.get(makeFakeRequest())
     expect(getBySpy).toHaveBeenCalledWith(makeFakeRequest())
   })
+  it('Should call getBy with correct lend_day', async () => {
+    const { sut, dbGetBooksRepositoryStub } = makeSut()
+    const getBySpy = jest.spyOn(dbGetBooksRepositoryStub, 'getBy')
+    await sut.get({lend_day: '12-05-2005'})
+    expect(getBySpy).toHaveBeenCalledWith({ lend_day: String(new Date('12-05-2005').getTime()) })
+  })
   it('Should return getBy result', async () => {
     const { sut } = makeSut()
     const response = await sut.get(makeFakeRequest())

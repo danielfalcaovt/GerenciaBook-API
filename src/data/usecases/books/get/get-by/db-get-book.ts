@@ -5,6 +5,10 @@ import { IDbGetByBookRepository } from "../../../../protocols/db/books/idb-get-b
 export class DbGetBook implements IGetBook {
   constructor(private readonly DbGetBy: IDbGetByBookRepository) {}
   async get(book: IGetBookModel): Promise<IBook[]> {
+    const request = book
+    if (book.lend_day) {
+      request.lend_day = String(new Date(book.lend_day).getTime())
+    }
     const result = await this.DbGetBy.getBy(book)
     return new Promise(resolve => resolve(result))
   }
