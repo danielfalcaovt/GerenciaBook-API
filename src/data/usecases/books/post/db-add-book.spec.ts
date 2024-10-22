@@ -36,7 +36,7 @@ const makeAddBookRepositoryStub = (): IDbAddBookRepository => {
 
 const makeFakeRequest = (): IAddBookModel => ({
   book_name: 'any_book',
-  lend_day: "1238128930128",
+  lend_day: "2005-05-05",
   student_class: "3000",
   student_name: 'any_name'
 })
@@ -46,7 +46,12 @@ describe('DbAddBook', () => {
     const { sut, addBookRepositoryStub } = makeSut()
     const addSpyRep = jest.spyOn(addBookRepositoryStub, 'add')
     await sut.add(makeFakeRequest())
-    expect(addSpyRep).toHaveBeenCalledWith(makeFakeRequest())
+    expect(addSpyRep).toHaveBeenCalledWith({
+      book_name: 'any_book',
+      lend_day: String(new Date('2005-05-05' + 'T10:20:20.200Z').getTime()),
+      student_class: "3000",
+      student_name: 'any_name'
+    })
   })
   it('Should return an book when post succeed', async () => {
     const { sut } = makeSut()

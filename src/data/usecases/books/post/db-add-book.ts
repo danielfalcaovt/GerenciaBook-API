@@ -7,7 +7,11 @@ export class DbAddBook implements IDbAddBook {
   constructor(private readonly dbAddBookRepository: IDbAddBookRepository) {}
 
   async add(book: IAddBookModel): Promise<IBook> {
-    const insertedBook = await this.dbAddBookRepository.add(book)
+    const request = book
+    if (book.lend_day) {
+      request.lend_day = String(new Date(book.lend_day + 'T10:20:20.200Z').getTime())
+    }
+    const insertedBook = await this.dbAddBookRepository.add(request)
     return new Promise(resolve => resolve(insertedBook))
   }
 }

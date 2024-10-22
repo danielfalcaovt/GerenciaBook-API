@@ -25,7 +25,7 @@ describe('AddBook Route', () => {
     .send({
       book_name: 'any_book',
         student_name: 'any_name',
-        lend_day: String(new Date().getTime()),
+        lend_day: '2005-05-05',
         student_class: "3001"
       })
       .expect(200)
