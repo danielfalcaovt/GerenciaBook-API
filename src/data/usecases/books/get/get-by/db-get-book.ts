@@ -10,7 +10,6 @@ export class DbGetBook implements IGetBook {
       request.lend_day = String(new Date(book.lend_day + 'T10:20:20.200Z').getTime())
     }
     const result = await this.DbGetBy.getBy(request)
-    console.log(result)
     return new Promise(resolve => resolve(result))
   }
 }
