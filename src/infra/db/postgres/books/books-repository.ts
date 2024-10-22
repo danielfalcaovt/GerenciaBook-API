@@ -1,38 +1,45 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IDbAddBookRepository } from "../../../../data/protocols/db/books/idb-add-books-repository";
-import { IDbDeleteBookRepository } from "../../../../data/protocols/db/books/idb-delete-books-repository";
-import { IDbGetBookRepository } from "../../../../data/protocols/db/books/idb-get-books-repository";
-import { IDbGetByBookRepository } from "../../../../data/protocols/db/books/idb-get-by-books";
-import { IDbUpdateBookRepository } from "../../../../data/protocols/db/books/idb-update-books-repository";
-import { IBook } from "../../../../domain/protocols/book";
-import { IGetBookModel } from "../../../../domain/usecases/books/get/iget-by-books";
-import { IAddBookModel } from "../../../../domain/usecases/books/post/idb-add-book";
-import { IUpdateBookModel } from "../../../../domain/usecases/books/update/iupdate-by-books";
-import { PgHelper } from "../helpers/pg-helper";
+import { IDbAddBookRepository } from '../../../../data/protocols/db/books/idb-add-books-repository'
+import { IDbDeleteBookRepository } from '../../../../data/protocols/db/books/idb-delete-books-repository'
+import { IDbGetBookRepository } from '../../../../data/protocols/db/books/idb-get-books-repository'
+import { IDbGetByBookRepository } from '../../../../data/protocols/db/books/idb-get-by-books'
+import { IDbUpdateBookRepository } from '../../../../data/protocols/db/books/idb-update-books-repository'
+import { IBook } from '../../../../domain/protocols/book'
+import { IGetBookModel } from '../../../../domain/usecases/books/get/iget-by-books'
+import { IAddBookModel } from '../../../../domain/usecases/books/post/idb-add-book'
+import { IUpdateBookModel } from '../../../../domain/usecases/books/update/iupdate-by-books'
+import { PgHelper } from '../helpers/pg-helper'
 
-export class BooksRepository implements IDbGetBookRepository, IDbGetByBookRepository, IDbAddBookRepository, IDbDeleteBookRepository, IDbUpdateBookRepository {
+export class BooksRepository
+  implements
+    IDbGetBookRepository,
+    IDbGetByBookRepository,
+    IDbAddBookRepository,
+    IDbDeleteBookRepository,
+    IDbUpdateBookRepository
+{
   async get(): Promise<IBook[]> {
     const result = await PgHelper.query('SELECT * FROM books')
     if (result.rows.length > 0) {
-      return new Promise(resolve => resolve(result.rows))
+      return new Promise((resolve) => resolve(result.rows))
     } else {
-      return new Promise(resolve => resolve([]))
+      return new Promise((resolve) => resolve([]))
     }
   }
 
   async getBy(data: IGetBookModel): Promise<IBook[]> {
     // ORDEM DA QUERY DE ACORDO COM A INTERFACE RECEPTADA
-    let query = "SELECT * FROM books WHERE"
+    let query = 'SELECT * FROM books WHERE'
     const queryValues: any[] = []
     let queryParams = 1
     if (data.book_name) {
-      queryValues.push('%'+data.book_name+'%')
+      queryValues.push('%' + data.book_name + '%')
       query += ` LOWER(book_name) LIKE LOWER($${queryParams})`
       queryParams++
     }
 
     if (data.student_name) {
-      queryValues.push('%'+data.student_name+'%')
+      queryValues.push('%' + data.student_name + '%')
       query += queryParams > 1 ? ' AND' : ''
       query += ` LOWER(student_name) LIKE LOWER($${queryParams})`
       queryParams++
@@ -59,37 +66,46 @@ export class BooksRepository implements IDbGetBookRepository, IDbGetByBookReposi
       queryParams++
     }
 
-    console.log(query)
-
     const queryResult = await PgHelper.query(query, queryValues)
-    console.log(queryResult)
     if (queryResult.rows.length === 0) {
-      return new Promise(resolve => resolve([]))
+      return new Promise((resolve) => resolve([]))
     }
 
-    return new Promise(resolve => resolve(queryResult.rows))
+    return new Promise((resolve) => resolve(queryResult.rows))
   }
 
   async add(book: IAddBookModel): Promise<IBook> {
-    const insertedBook = await PgHelper.query('INSERT INTO books(book_name, student_name, lend_day, student_class, phone) VALUES($1, $2, $3, $4, $5) RETURNING *', [book.book_name, book.student_name, book.lend_day, book.student_class, book.phone || null])
+    const insertedBook = await PgHelper.query(
+      'INSERT INTO books(book_name, student_name, lend_day, student_class, phone) VALUES($1, $2, $3, $4, $5) RETURNING *',
+      [
+        book.book_name,
+        book.student_name,
+        book.lend_day,
+        book.student_class,
+        book.phone || null
+      ]
+    )
     if (insertedBook.rows.length > 0) {
-      return new Promise(resolve => resolve(insertedBook.rows[0]))
+      return new Promise((resolve) => resolve(insertedBook.rows[0]))
     } else {
       throw new Error()
     }
   }
 
   async delete(bookId: string): Promise<number> {
-    const queryResult = await PgHelper.query('DELETE FROM books WHERE id = $1 RETURNING *', [bookId])
+    const queryResult = await PgHelper.query(
+      'DELETE FROM books WHERE id = $1 RETURNING *',
+      [bookId]
+    )
     if (queryResult.rows.length > 0) {
-      return new Promise(resolve => resolve(queryResult.rows.length))
+      return new Promise((resolve) => resolve(queryResult.rows.length))
     } else {
-      return new Promise(resolve => resolve(0))
+      return new Promise((resolve) => resolve(0))
     }
   }
 
   async update(book: IUpdateBookModel): Promise<IBook[]> {
-    let query = "UPDATE books SET"
+    let query = 'UPDATE books SET'
     const queryValues: any[] = []
     let queryParams = 1
     if (book.book_name) {
@@ -125,14 +141,14 @@ export class BooksRepository implements IDbGetBookRepository, IDbGetByBookReposi
       query += ` phone = $${queryParams}`
       queryParams++
     }
-    
+
     query += ` WHERE id = $${queryParams} RETURNING *`
     queryValues.push(book.id)
     const result = await PgHelper.query(query, queryValues)
-    if(result.rows.length > 0) {
-      return new Promise(resolve => resolve(result.rows))
+    if (result.rows.length > 0) {
+      return new Promise((resolve) => resolve(result.rows))
     } else {
-      return new Promise(resolve => resolve([]))
+      return new Promise((resolve) => resolve([]))
     }
   }
 }
