@@ -13,4 +13,7 @@ jobs:
         run: |
           npm install
           npm run build
-          npm run test:unit
+          npm run test:coveralls
+      - name: Coveralls GitHub Action
+        uses: coverallsapp/github-action@v2.3.4
+            
