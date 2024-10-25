@@ -87,13 +87,20 @@ describe('BooksRepository', () => {
       student_name: 'any_name',
       book_name: 'any_book'
     })
+    const makeFakeGetWithAllParameters = (): IGetBookModel => ({
+      book_name: 'any_book',
+      lend_day: '123123123',
+      phone: 'any_number',
+      student_class: 'any_class',
+      student_name: 'any_name'
+    })
     it('Should call query with correct values', async () => {
       const sut = new BooksRepository()
       const querySpy = jest.spyOn(PgHelper, 'query')
-      await sut.getBy(makeFakeGetByRequest())
+      await sut.getBy(makeFakeGetWithAllParameters())
       expect(querySpy).toHaveBeenCalledWith(
-        'SELECT * FROM books WHERE LOWER(book_name) LIKE LOWER($1) AND LOWER(student_name) LIKE LOWER($2)',
-        ['%any_book%', '%any_name%']
+        'SELECT * FROM books WHERE LOWER(book_name) LIKE LOWER($1) AND LOWER(student_name) LIKE LOWER($2) AND student_class = $3 AND lend_day = $4 AND phone = $5',
+        ['%any_book%', '%any_name%', 'any_class', '123123123', 'any_number']
       )
     })
     it('Should return an empty array if query found nothing', async () => {
